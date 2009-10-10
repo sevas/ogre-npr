@@ -1,0 +1,69 @@
+<scene formatVersion="1.0" upAxis="y" unitsPerMeter="39.3701" minOgreVersion="1.6" author="OgreMax Scene Exporter (www.ogremax.com)">
+    <environment>
+        <colourAmbient r="0.333333" g="0.333333" b="0.333333" />
+        <colourBackground r="0" g="0" b="0" />
+        <clipping near="0" far="100000" />
+    </environment>
+    <nodes>
+        <node name="Box01">
+            <position x="-39.8267" y="5.66769e-009" z="0.129662" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0" qz="0" qw="1" />
+            <entity name="Box01" castShadows="true" receiveShadows="true" meshFile="Box01.mesh">
+                <subentities>
+                    <subentity index="0" materialName="NoMaterial" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="Cone01">
+            <position x="-0.151842" y="2.39595e-008" z="0.548129" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0" qz="0" qw="1" />
+            <entity name="Cone01" castShadows="true" receiveShadows="true" meshFile="Cone01.mesh">
+                <subentities>
+                    <subentity index="0" materialName="NoMaterial" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="Teapot01">
+            <position x="56.4988" y="-2.66756e-009" z="-0.0610266" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0" qz="0" qw="1" />
+            <entity name="Teapot01" castShadows="true" receiveShadows="true" meshFile="Teapot01.mesh">
+                <subentities>
+                    <subentity index="0" materialName="NoMaterial" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="Cylinder01">
+            <position x="-45.1633" y="2.20209e-006" z="50.3779" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0" qz="0" qw="1" />
+            <entity name="Cylinder01" castShadows="true" receiveShadows="true" meshFile="Cylinder01.mesh">
+                <subentities>
+                    <subentity index="0" materialName="NoMaterial" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="Torus Knot01">
+            <position x="53.5155" y="13.5703" z="60.9525" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0" qz="0" qw="1" />
+            <entity name="Torus Knot01" castShadows="true" receiveShadows="true" meshFile="TorusKnot01.mesh">
+                <subentities>
+                    <subentity index="0" materialName="NoMaterial" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="Gengon01">
+            <position x="0.202942" y="2.37802e-006" z="54.4029" />
+            <scale x="1" y="1" z="1" />
+            <rotation qx="0" qy="0" qz="0" qw="1" />
+            <entity name="Gengon01" castShadows="true" receiveShadows="true" meshFile="Gengon01.mesh">
+                <subentities>
+                    <subentity index="0" materialName="NoMaterial" />
+                </subentities>
+            </entity>
+        </node>
+    </nodes>
+</scene>

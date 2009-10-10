@@ -1,0 +1,148 @@
+material Objects/Sphere
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.7 0.2 0.2  1.0
+      diffuse  0.7 0.7 0.7
+      specular  0.3 0.3 0.7  50
+    }
+  }
+}
+
+
+material Objects/Cube
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.7 0.2 0.2 0.5
+      //diffuse  0.7 0.7 0.7
+    }
+  }
+}
+
+material Objects/Flare
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      scene_blend add
+      depth_write off
+      texture_unit
+      {
+        texture flare.png
+      }
+    }
+  }
+}
+
+material Objects/Gizmo_On
+{
+  technique
+  {
+    pass
+    {
+	lighting off
+	ambient vertexcolour
+    }
+  }
+}
+
+material Objects/Gizmo_Off
+{
+  technique
+  {
+    pass
+    {
+	lighting off
+	ambient 0.5 0.5 0.5
+    }
+  }
+}
+
+material Objects/Gizmo_Selected
+{
+  technique
+  {
+    pass
+    {
+	lighting off
+	ambient 0.5 0.5 0.0
+    }
+  }
+}
+
+material Objects/Gizmo_XYPlane
+{
+  technique
+  {
+    pass
+    {
+		lighting on
+		cull_hardware none
+		cull_software none
+		scene_blend alpha_blend
+		depth_write off
+		ambient 0.5 0.0 0.0 0.4
+		diffuse 0.5 0.0 0.0 0.4
+    }
+  }
+}
+
+
+material Objects/Gizmo_YZPlane
+{
+  technique
+  {
+    pass
+    {
+		lighting on
+		cull_hardware none
+		cull_software none
+		scene_blend alpha_blend
+		depth_write off
+		ambient 0.0 0.5 0.0 0.3
+		diffuse 0.0 0.5 0.0 0.3
+    }
+  }
+}
+
+material Objects/Gizmo_XZPlane
+{
+  technique
+  {
+    pass
+    {
+		lighting on
+		cull_hardware none
+		cull_software none
+		scene_blend alpha_blend
+		depth_write off
+		ambient 0.0 0.0 0.5 0.4
+		diffuse 0.0 0.0 0.5 0.4
+    }
+  }
+}
+
+
+material Objects/Gizmo_SelectedPlane
+{
+  technique
+  {
+    pass
+    {
+		lighting on
+		cull_hardware none
+		cull_software none
+		scene_blend alpha_blend
+		depth_write off
+		ambient 0.5 0.5 0.0 0.5
+		diffuse 0.5 0.5 0.0 0.5
+    }
+  }
+}

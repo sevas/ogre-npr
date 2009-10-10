@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogre-npr", "ogre-npr\ogre-npr.vcproj", "{315EFB01-99A5-4C7E-8DB1-9E329966BD44}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{315EFB01-99A5-4C7E-8DB1-9E329966BD44}.Debug|Win32.ActiveCfg = Debug|Win32
+		{315EFB01-99A5-4C7E-8DB1-9E329966BD44}.Debug|Win32.Build.0 = Debug|Win32
+		{315EFB01-99A5-4C7E-8DB1-9E329966BD44}.Release|Win32.ActiveCfg = Release|Win32
+		{315EFB01-99A5-4C7E-8DB1-9E329966BD44}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
