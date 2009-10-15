@@ -26,9 +26,10 @@ protected:
     bool keyPressed( const OIS::KeyEvent &e );
     bool keyReleased( const OIS::KeyEvent &e );
 
-
+	void _populate();
     void _createLight();
     void _createSphere(int, Vector3);
+	void _loadMesh(const String&, const Vector3&);
 
 	void _createDebugOverlay();
 	void _updateDebugOverlay();

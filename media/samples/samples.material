@@ -5,6 +5,9 @@ material NoMaterial
 	{
 		pass
 		{
+		      ambient 0.5 0.5 0.5  1.0
+		      diffuse  0.5 0.5 0.5
+		      //specular  0.3 0.3 0.7  50
 		}
 
 	}

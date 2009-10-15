@@ -5,14 +5,25 @@
 #include <sstream>
 #include <boost/foreach.hpp>
 
-
+//#define ANIMATE_LIGHT
 
 void MyApplication::createScene()
 {
+	const RenderSystemCapabilities* caps = Root::getSingleton().getRenderSystem()->getCapabilities();
+	if (!caps->hasCapability(RSC_VERTEX_PROGRAM) || !(caps->hasCapability(RSC_FRAGMENT_PROGRAM)))
+	{
+		OGRE_EXCEPT(Exception::ERR_NOT_IMPLEMENTED, "Your card does not support vertex and fragment programs, so cannot "
+			"run this demo. Sorry!", 
+			"createScene");
+	}
+
+
+
+
     mSceneMgr->setNormaliseNormalsOnScale(true);
     _createGrid(500);
     _createLight();
-    //_populate();
+    _populate();
 
     _createDebugOverlay();
 
@@ -21,9 +32,10 @@ void MyApplication::createScene()
 bool MyApplication::frameStarted(const FrameEvent& evt)
 {
     _updateDebugOverlay();
-    //_drawRay(mMouseRay);
-    mAnimState->addTime(evt.timeSinceLastFrame);
 
+#ifdef ANIMATE_LIGHT
+		mAnimState->addTime(evt.timeSinceLastFrame);
+#endif
 
     return OgreApplication::frameStarted(evt);
 }
@@ -97,6 +109,38 @@ void MyApplication::_updateDebugOverlay()
     mDebugText->setText("FPS", StringConverter::toString(mWindow->getLastFPS()));
     mDebugText->setText("Triangles", StringConverter::toString(mWindow->getTriangleCount()));
 }
+
+//-----------------------------------------------------------------------------
+void MyApplication::_populate()
+{
+	_loadMesh("TorusKnot01", Vector3(50, 0, 0));
+	_loadMesh("Teapot01", Vector3(-50, 0, 0));
+	_loadMesh("Gengon01", Vector3(50, 0, 50));
+	_loadMesh("Cone01", Vector3(-50, 0, 50));
+	_loadMesh("Box01", Vector3(50, 0, -50));
+	_loadMesh("Cylinder01", Vector3(-50, 0, -50));
+}
+//-----------------------------------------------------------------------------
+void MyApplication::_loadMesh(const String &_name, const Vector3 &_pos)
+{
+	Entity *ent = mSceneMgr->createEntity(_name, _name+".mesh");
+	SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode(_name+"Node", _pos);
+	
+	
+	ent->getSubEntity(0)->setMaterialName("Examples/CelShading");
+
+	/* ent->getSubEntity(0)->setCustomParameter(0, Vector4(35.0, 0.0, 0.0, 0.0));
+	ent->getSubEntity(0)->setCustomParameter(1, Vector4(1.0, 0.5, 0.5, 1.0));
+	ent->getSubEntity(0)->setCustomParameter(2, Vector4(0.7, 0.2, 0.2, 1.0));*/
+
+	ent->getSubEntity(0)->setCustomParameter(0, Vector4(10.0f, 0.0f, 0.0f, 0.0f));
+	ent->getSubEntity(0)->setCustomParameter(1, Vector4(0.0f, 0.5f, 0.0f, 1.0f));
+	ent->getSubEntity(0)->setCustomParameter(2, Vector4(0.3f, 0.5f, 0.3f, 1.0f));
+
+	
+	
+	node->attachObject(ent);
+}
 //-----------------------------------------------------------------------------
 void MyApplication::_createSphere(int id, Vector3 _pos)
 {
@@ -119,27 +163,29 @@ void MyApplication::_createLight()
     mLightNode->attachObject(mLight);
     mLightNode->attachObject(mBBset);
 
-    Real totalTime = 10;                
+
+#ifdef ANIMATE_LIGHT
+	Real totalTime = 10;                
     
-    Animation *anim = mSceneMgr->createAnimation("Light Track", totalTime);
-    anim->setInterpolationMode(Animation::IM_SPLINE);
+	Animation *anim = mSceneMgr->createAnimation("Light Track", totalTime);
+	anim->setInterpolationMode(Animation::IM_SPLINE);
 
-    NodeAnimationTrack *track = anim->createNodeTrack(0, mLightNode);
-    TransformKeyFrame *key;// = track->createNodeKeyFrame(0);      
+	NodeAnimationTrack *track = anim->createNodeTrack(0, mLightNode);
+	TransformKeyFrame *key;      
 
-    Real precision = 36, amplitude = 300;
-    int keyframeIndex = 0;
-    for(float phi=0.0; phi <= 2*Math::PI; phi+= Math::PI / precision)
-    {
-        key = track->createNodeKeyFrame(phi * (totalTime/ (2*Math::PI)));
-        key->setTranslate(Vector3(amplitude*Math::Cos(phi)
-                                 ,amplitude*Math::Sin(phi)
-                                 ,0));
-    }
+	Real precision = 36, amplitude = 300;
+	int keyframeIndex = 0;
+	for(float phi=0.0; phi <= 2*Math::PI; phi+= Math::PI / precision)
+	{
+		key = track->createNodeKeyFrame(phi * (totalTime/ (2*Math::PI)));
+		key->setTranslate(Vector3(amplitude*Math::Cos(phi)
+								 ,amplitude*Math::Sin(phi)
+								 ,0));
+	}
 
-    mAnimState = mSceneMgr->createAnimationState("Light Track");
-    mAnimState->setEnabled(true);
-
-    
-    
+	mAnimState = mSceneMgr->createAnimationState("Light Track");
+	mAnimState->setEnabled(true);
+#else
+	mLightNode->setPosition(0, 500, 0);
+#endif
 }

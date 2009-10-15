@@ -110,7 +110,7 @@ void OgreApplication::createViewports()
 {
     // Create one viewport, entire window
     Viewport* vp = mWindow->addViewport(mCamera);
-    vp->setBackgroundColour(ColourValue(0,0,0));
+    vp->setBackgroundColour(ColourValue(0.5,0.5,0.5));
 
     // Alter the camera aspect ratio to match the viewport
     mCamera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
@@ -314,7 +314,7 @@ void OgreApplication::_createGrid(int _units)
     float c;
     for (int i = 10; i<=_units ; i+=10)
     {
-        c = (i%100) ? 0.3 : 0.5;
+        c = (i%100) ? 0.6 : 0.7;
 
         grid->position(-_units, 0, i);
         grid->colour(c, c, c);
