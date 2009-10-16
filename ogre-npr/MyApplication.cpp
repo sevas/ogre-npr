@@ -113,33 +113,131 @@ void MyApplication::_updateDebugOverlay()
 //-----------------------------------------------------------------------------
 void MyApplication::_populate()
 {
-	_loadMesh("TorusKnot01", Vector3(50, 0, 0));
-	_loadMesh("Teapot01", Vector3(-50, 0, 0));
+	//_loadMesh("TorusKnot01", Vector3(50, 0, 0));
+	//_loadMesh("Teapot01", Vector3(-50, 0, 0));
 	_loadMesh("Gengon01", Vector3(50, 0, 50));
 	_loadMesh("Cone01", Vector3(-50, 0, 50));
 	_loadMesh("Box01", Vector3(50, 0, -50));
-	_loadMesh("Cylinder01", Vector3(-50, 0, -50));
+	//_loadMesh("Cylinder01", Vector3(-50, 0, -50));
+	//
+	
+	//SceneNode *bunny = _loadMesh("bunny", Vector3(-50, 0, 100));
+
+	//bunny->scale(20, 20, 20);
+	//bunny->pitch(Degree(-90));
+	//bunny->translate(0, 20, 0);
+
+
+	//SceneNode *dragon = _loadMesh("dragon", Vector3(50, 0, 100));
+
+	//dragon->scale(20, 20, 20);
+	//dragon->pitch(Degree(180));
+	//dragon->translate(0, 15, 0);
+
+
+	_loadMesh("Rectangle01", Vector3(0, 0, 0));
+
 }
 //-----------------------------------------------------------------------------
-void MyApplication::_loadMesh(const String &_name, const Vector3 &_pos)
+SceneNode* MyApplication::_loadMesh(const String &_name, const Vector3 &_pos)
 {
 	Entity *ent = mSceneMgr->createEntity(_name, _name+".mesh");
 	SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode(_name+"Node", _pos);
 	
-	
-	ent->getSubEntity(0)->setMaterialName("Examples/CelShading");
+	//_setCelShadingMaterial(ent);
+	ent->setMaterialName("Objects/Cube");
+	ManualObject *edges = _createQuadFinGeometry(ent);
 
-	/* ent->getSubEntity(0)->setCustomParameter(0, Vector4(35.0, 0.0, 0.0, 0.0));
-	ent->getSubEntity(0)->setCustomParameter(1, Vector4(1.0, 0.5, 0.5, 1.0));
-	ent->getSubEntity(0)->setCustomParameter(2, Vector4(0.7, 0.2, 0.2, 1.0));*/
 
-	ent->getSubEntity(0)->setCustomParameter(0, Vector4(10.0f, 0.0f, 0.0f, 0.0f));
-	ent->getSubEntity(0)->setCustomParameter(1, Vector4(0.0f, 0.5f, 0.0f, 1.0f));
-	ent->getSubEntity(0)->setCustomParameter(2, Vector4(0.3f, 0.5f, 0.3f, 1.0f));
-
-	
-	
 	node->attachObject(ent);
+	node->attachObject(edges);
+	return node;
+}
+//-----------------------------------------------------------------------------
+ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
+{
+	MeshPtr mesh = _ent->getMesh();
+	mesh->buildEdgeList();
+	
+	EdgeData *edgeData = mesh->getEdgeList();
+	
+	ManualObject *edgeGeometry = mSceneMgr->createManualObject(_ent->getName() + "edges");
+
+	MeshData meshData;
+	_getMeshInformation(mesh, meshData, Vector3::ZERO, Quaternion::IDENTITY, Vector3(1,1,1));
+
+
+	int edgeCount = edgeData->edgeGroups[0].edges.size();
+	int idx=0;
+	edgeGeometry->begin("Objects/Edge", RenderOperation::OT_LINE_LIST);
+
+	for(int i=0; i<edgeCount ; i++)
+	{
+		EdgeData::Edge e = edgeData->edgeGroups[0].edges[i];
+
+		if(e.degenerate)
+		{
+			Vector4 n0 = edgeData->triangleFaceNormals[e.triIndex[0]];
+		}
+		else
+		{
+			Vector3 v0 =  meshData.vertices[e.vertIndex[0]];
+			Vector3 v1 =  meshData.vertices[e.vertIndex[1]];
+
+			Vector3 ns0 = meshData.normals[e.vertIndex[0]];
+			Vector3 ns1 = meshData.normals[e.vertIndex[1]];
+
+			Vector4 nA = edgeData->triangleFaceNormals[e.triIndex[0]];
+			Vector4 nB = edgeData->triangleFaceNormals[e.triIndex[1]];
+
+			
+			Real ridgeThreshold = Degree(60.0f).valueRadians();
+			Real valleyThreshold = Degree(60.0f).valueRadians();
+
+			bool isRidge = _isEdgeARidge(Vector3(nA.x, nA.y, nA.z)
+										,Vector3(nB.x, nB.y, nB.z)
+										, 0.10f);
+
+			bool isValley = _isEdgeAValley(Vector3(nA.x, nA.y, nA.z)
+										  ,Vector3(nB.x, nB.y, nB.z)
+										  ,60.0f);
+			Real tc;
+			if(isRidge  || isValley)
+			{
+				tc=1.0f;
+			}
+			else
+				tc=0.0f;
+
+			if(isRidge ||isValley)
+			{
+				edgeGeometry->position(v0);
+				edgeGeometry->normal(ns0);
+				edgeGeometry->textureCoord(nA);
+				edgeGeometry->index(idx++);
+
+				edgeGeometry->position(v1);
+				edgeGeometry->normal(ns1);
+				edgeGeometry->textureCoord(nB);
+				edgeGeometry->index(idx++);
+			}
+		}
+	}
+	
+
+	edgeGeometry->end();
+	
+
+	return edgeGeometry;
+}
+//-----------------------------------------------------------------------------
+void MyApplication::_setCelShadingMaterial(Entity *_ent)
+{
+	_ent->getSubEntity(0)->setMaterialName("Examples/CelShading");
+
+	_ent->getSubEntity(0)->setCustomParameter(0, Vector4(10.0f, 0.0f, 0.0f, 0.0f));
+	_ent->getSubEntity(0)->setCustomParameter(1, Vector4(0.0f, 0.5f, 0.0f, 1.0f));
+	_ent->getSubEntity(0)->setCustomParameter(2, Vector4(0.3f, 0.5f, 0.3f, 1.0f));
 }
 //-----------------------------------------------------------------------------
 void MyApplication::_createSphere(int id, Vector3 _pos)
@@ -186,6 +284,168 @@ void MyApplication::_createLight()
 	mAnimState = mSceneMgr->createAnimationState("Light Track");
 	mAnimState->setEnabled(true);
 #else
-	mLightNode->setPosition(0, 500, 0);
+	mLightNode->setPosition(500, 500, 500);
 #endif
 }
+//-----------------------------------------------------------------------------
+void MyApplication::_getMeshInformation(const MeshPtr				_mesh
+										,MyApplication::MeshData	&_meshData
+										,const Vector3				&_position
+										,const Quaternion			&_orient
+										,const Vector3				&_scale)
+{
+	bool added_shared = false;
+	size_t current_offset = 0;
+	size_t shared_offset = 0;
+	size_t next_offset = 0;
+	size_t index_offset = 0;
+
+	_meshData.vertexCount = _meshData.indexCount = 0;
+
+	// Calculate how many vertices and indices we're going to need
+	for (unsigned short i = 0; i < _mesh->getNumSubMeshes(); ++i)
+	{
+		Ogre::SubMesh* submesh = _mesh->getSubMesh( i );
+
+		// We only need to add the shared vertices once
+		if(submesh->useSharedVertices)
+		{
+			if( !added_shared )
+			{
+				_meshData.vertexCount += _mesh->sharedVertexData->vertexCount;
+				added_shared = true;
+			}
+		}
+		else
+		{
+			_meshData.vertexCount += submesh->vertexData->vertexCount;
+		}
+
+		// Add the indices
+		_meshData.indexCount += submesh->indexData->indexCount;
+	}
+
+
+	// Allocate space for the vertices and indices
+	_meshData.vertices = new Vector3[_meshData.vertexCount];
+	_meshData.normals = new Vector3[_meshData.vertexCount];
+	_meshData.indices = new unsigned long[_meshData.indexCount];
+
+	
+
+	added_shared = false;
+
+	// Run through the submeshes again, adding the data into the arrays
+	for ( unsigned short i = 0; i < _mesh->getNumSubMeshes(); ++i)
+	{
+		Ogre::SubMesh* submesh = _mesh->getSubMesh(i);
+
+		Ogre::VertexData* vertex_data = submesh->useSharedVertices ? _mesh->sharedVertexData : submesh->vertexData;
+
+		if((!submesh->useSharedVertices)||(submesh->useSharedVertices && !added_shared))
+		{
+			if(submesh->useSharedVertices)
+			{
+				added_shared = true;
+				shared_offset = current_offset;
+			}
+	
+			// get position
+			{
+				const Ogre::VertexElement* posElem =
+					vertex_data->vertexDeclaration->findElementBySemantic(Ogre::VES_POSITION);
+				
+				Ogre::HardwareVertexBufferSharedPtr vbuf =
+					vertex_data->vertexBufferBinding->getBuffer(posElem->getSource());
+
+				unsigned char* vertex =
+					static_cast<unsigned char*>(vbuf->lock(Ogre::HardwareBuffer::HBL_READ_ONLY));
+
+				// There is _no_ baseVertexPointerToElement() which takes an Ogre::Real or a double
+				//  as second argument. So make it float, to avoid trouble when Ogre::Real will
+				//  be comiled/typedefed as double:
+				//      Ogre::Real* pReal;
+				float* pReal;
+
+				for( size_t j = 0; j < vertex_data->vertexCount; ++j, vertex += vbuf->getVertexSize())
+				{
+					posElem->baseVertexPointerToElement(vertex, &pReal);
+
+					Ogre::Vector3 pt(pReal[0], pReal[1], pReal[2]);
+
+					_meshData.vertices[current_offset + j] = (_orient * (pt * _scale)) + _position;
+				}
+				vbuf->unlock();
+			}
+			// get normals
+			{
+				const Ogre::VertexElement* normalElem =
+					vertex_data->vertexDeclaration->findElementBySemantic(Ogre::VES_NORMAL);
+				
+				Ogre::HardwareVertexBufferSharedPtr vbuf =
+					vertex_data->vertexBufferBinding->getBuffer(normalElem->getSource());
+
+				unsigned char* normal =
+					static_cast<unsigned char*>(vbuf->lock(Ogre::HardwareBuffer::HBL_READ_ONLY));
+
+				float* pReal;
+				for( size_t j = 0; j < vertex_data->vertexCount; ++j, normal += vbuf->getVertexSize())
+				{
+					normalElem->baseVertexPointerToElement(normal, &pReal);
+
+					Ogre::Vector3 normal(pReal[0], pReal[1], pReal[2]);
+
+					_meshData.normals[current_offset + j] = (_orient * (normal));
+				}
+				vbuf->unlock();
+			}
+
+
+
+			next_offset += vertex_data->vertexCount;
+		}
+
+
+		Ogre::IndexData* index_data = submesh->indexData;
+		size_t numTris = index_data->indexCount / 3;
+		Ogre::HardwareIndexBufferSharedPtr ibuf = index_data->indexBuffer;
+
+		bool use32bitindexes = (ibuf->getType() == Ogre::HardwareIndexBuffer::IT_32BIT);
+
+		unsigned long*  pLong = static_cast<unsigned long*>(ibuf->lock(Ogre::HardwareBuffer::HBL_READ_ONLY));
+		unsigned short* pShort = reinterpret_cast<unsigned short*>(pLong);
+
+
+		size_t offset = (submesh->useSharedVertices)? shared_offset : current_offset;
+
+		// Ogre 1.6 patch (commenting the static_cast...) - index offsets start from 0 for each submesh
+		if ( use32bitindexes )
+		{
+			for ( size_t k = 0; k < numTris*3; ++k)
+			{
+				_meshData.indices[index_offset++] = pLong[k] /*+ static_cast<unsigned long>(offset)*/;
+			}
+		}
+		else
+		{
+			for ( size_t k = 0; k < numTris*3; ++k)
+			{
+				_meshData.indices[index_offset++] = static_cast<unsigned long>(pShort[k]) /*+
+																				static_cast<unsigned long>(offset)*/;
+			}
+		}
+
+		ibuf->unlock();
+		current_offset = next_offset;
+	}
+} 
+//-----------------------------------------------------------------------------
+bool MyApplication::_isEdgeARidge(const Vector3 &_nA, const Vector3 &_nB, const Real &_threshold)
+{
+	return _nA.dotProduct(_nB) < -Math::Cos(_threshold);
+}
+bool MyApplication::_isEdgeAValley(const Vector3 &_nA, const Vector3 &_nB, const Real &_threshold)
+{
+	return _nA.dotProduct(_nB) < -Math::Cos(_threshold);
+}
+//-----------------------------------------------------------------------------

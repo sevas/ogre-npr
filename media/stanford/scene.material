@@ -1,0 +1,11 @@
+material BaseWhite
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.5 0.5 0.5 1.0
+			diffuse 0.5 0.5 0.5 1.0
+		}
+	}
+}

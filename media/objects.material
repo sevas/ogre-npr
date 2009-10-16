@@ -11,6 +11,18 @@ material Objects/Sphere
   }
 }
 
+material Objects/Edge
+{
+  technique
+  {
+    pass
+    {
+      ambient 0.0 0.0 0.0  1.0
+    }
+  }
+}
+
+
 
 material Objects/Cube
 {

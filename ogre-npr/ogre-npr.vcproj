@@ -40,7 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm110"
+				AdditionalOptions="/Zm200"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(BOOST136_HOME)&quot;;&quot;$(OGRE16_HOME)\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
@@ -117,6 +117,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/Zm200"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="&quot;$(BOOST136_HOME)&quot;;&quot;$(OGRE16_HOME)\include&quot;"
