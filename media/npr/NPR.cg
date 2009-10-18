@@ -1,0 +1,33 @@
+
+void main_vp(float4 position	: POSITION,
+			 float3 normal		: NORMAL,
+			 float3 tangent		: TEXCOORD0,
+			 float  markedEdge  : TEXCOORD1,
+			 // outputs
+			 out float4 oPosition : POSITION,
+			 out float3 oColor	  : COLOR,
+
+			 // parameters
+			 //uniform float3 lightPosition, // object space
+			 //uniform float3 eyePosition,   // object space
+			 uniform float4x4 worldViewProj)
+{
+	// calculate output position
+	oPosition = mul(worldViewProj, position);
+	
+	if(markedEdge == 1.0f)
+		oColor = float3(0,0,0);
+	else
+		oColor = float3(1.0f,0.0f,0.0f);
+}
+
+void main_fp(
+			 float3 color : COLOR,
+			 out float3 oColor	: COLOR
+			 
+)
+{
+	oColor = color;
+}
+			 
+			 

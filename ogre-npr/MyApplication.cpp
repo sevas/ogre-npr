@@ -13,11 +13,9 @@ void MyApplication::createScene()
 	if (!caps->hasCapability(RSC_VERTEX_PROGRAM) || !(caps->hasCapability(RSC_FRAGMENT_PROGRAM)))
 	{
 		OGRE_EXCEPT(Exception::ERR_NOT_IMPLEMENTED, "Your card does not support vertex and fragment programs, so cannot "
-			"run this demo. Sorry!", 
+			"run this application. Sorry!", 
 			"createScene");
 	}
-
-
 
 
     mSceneMgr->setNormaliseNormalsOnScale(true);
@@ -113,12 +111,12 @@ void MyApplication::_updateDebugOverlay()
 //-----------------------------------------------------------------------------
 void MyApplication::_populate()
 {
-	//_loadMesh("TorusKnot01", Vector3(50, 0, 0));
-	//_loadMesh("Teapot01", Vector3(-50, 0, 0));
+	_loadMesh("TorusKnot01", Vector3(50, 0, 0));
+	_loadMesh("Teapot01", Vector3(-50, 0, 0));
 	_loadMesh("Gengon01", Vector3(50, 0, 50));
 	_loadMesh("Cone01", Vector3(-50, 0, 50));
 	_loadMesh("Box01", Vector3(50, 0, -50));
-	//_loadMesh("Cylinder01", Vector3(-50, 0, -50));
+	_loadMesh("Cylinder01", Vector3(-50, 0, -50));
 	//
 	
 	//SceneNode *bunny = _loadMesh("bunny", Vector3(-50, 0, 100));
@@ -169,86 +167,109 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 
 	int edgeCount = edgeData->edgeGroups[0].edges.size();
 	int idx=0;
-	edgeGeometry->begin("Objects/Edge", RenderOperation::OT_LINE_LIST);
+	edgeGeometry->begin("NPR/EdgeOutliner", RenderOperation::OT_TRIANGLE_LIST);
 
 	for(int i=0; i<edgeCount ; i++)
 	{
 		EdgeData::Edge e = edgeData->edgeGroups[0].edges[i];
 
+		Vector3 v0, v1;
+		Vector3 ns0, ns1;
+		Vector4 nA, nB ;
+		Real tc;
+
 		if(e.degenerate)
 		{
-			Vector3 v0 =  meshData.vertices[e.vertIndex[0]];
-			Vector3 v1 =  meshData.vertices[e.vertIndex[1]];
+			v0 =  meshData.vertices[e.vertIndex[0]];
+			v1 =  meshData.vertices[e.vertIndex[1]];
 
-			Vector3 ns0 = meshData.normals[e.vertIndex[0]];
-			Vector3 ns1 = meshData.normals[e.vertIndex[1]];
+			ns0 = meshData.normals[e.vertIndex[0]];
+			ns1 = meshData.normals[e.vertIndex[1]];
 
-			Vector4 nA = edgeData->triangleFaceNormals[e.triIndex[0]];
-			Vector4 nB = -nA;
-
-			edgeGeometry->position(v0);
-			edgeGeometry->normal(ns0);
-			edgeGeometry->textureCoord(nA);
-			edgeGeometry->index(idx++);
-
-			edgeGeometry->position(v1);
-			edgeGeometry->normal(ns1);
-			edgeGeometry->textureCoord(nB);
-			edgeGeometry->index(idx++);
+			nA = edgeData->triangleFaceNormals[e.triIndex[0]];
+			nB = -nA;
+			tc = 1.0f;
 		}
 		else
 		{
-			Vector3 v0 =  meshData.vertices[e.vertIndex[0]];
-			Vector3 v1 =  meshData.vertices[e.vertIndex[1]];
+			v0 =  meshData.vertices[e.vertIndex[0]];
+			v1 =  meshData.vertices[e.vertIndex[1]];
 
-			Vector3 ns0 = meshData.normals[e.vertIndex[0]];
-			Vector3 ns1 = meshData.normals[e.vertIndex[1]];
+			ns0 = meshData.normals[e.vertIndex[0]];
+			ns1 = meshData.normals[e.vertIndex[1]];
 
-			Vector4 nA = edgeData->triangleFaceNormals[e.triIndex[0]];
-			Vector4 nB = edgeData->triangleFaceNormals[e.triIndex[1]];
+			nA = edgeData->triangleFaceNormals[e.triIndex[0]];
+			nB = edgeData->triangleFaceNormals[e.triIndex[1]];
 
 			
 			Real ridgeThreshold = Degree(35.0f).valueRadians();
 			Real valleyThreshold = Degree(35.0f).valueRadians();
 
 
-			Vector3 nA_norm = Vector3(nA.x, nA.y, nA.z).normalisedCopy();
-			Vector3 nB_norm = Vector3(nB.x, nB.y, nB.z).normalisedCopy();
-
-			bool isRidge = _isEdgeARidge(nA_norm
-										,nB_norm
-										, ridgeThreshold);
+			bool isRidge = _isEdgeARidge(Vector3(nA.x, nA.y, nA.z)
+										,Vector3(nB.x, nB.y, nB.z)
+										,ridgeThreshold);
 
 			bool isValley = _isEdgeAValley(Vector3(nA.x, nA.y, nA.z)
 										  ,Vector3(nB.x, nB.y, nB.z)
 										  ,valleyThreshold);
 
-			Real tc;
-			if(isRidge  || isValley)
-			{
-				tc=1.0f;
-			}
-			else
-				tc=0.0f;
-
-			if(isRidge ||isValley)
-			{
-				edgeGeometry->position(v0);
-				edgeGeometry->normal(ns0);
-				edgeGeometry->textureCoord(nA);
-				edgeGeometry->index(idx++);
-
-				edgeGeometry->position(v1);
-				edgeGeometry->normal(ns1);
-				edgeGeometry->textureCoord(nB);
-				edgeGeometry->index(idx++);
-			}
+			tc = (isRidge  || isValley) ? 1.0f : 0.0f;
 		}
+
+		//build degenerate triangles for this edge
+		// 1st tri
+		Vector3 nA_ = Vector3(nA.x, nA.y, nA.z).normalisedCopy();
+		Vector3 nB_ = Vector3(nB.x, nB.y, nB.z).normalisedCopy();
+
+		Real offset = 0.5f;
+
+		edgeGeometry->position(v0+nA_*offset);
+		edgeGeometry->normal(ns0);
+		edgeGeometry->textureCoord(nA);
+		edgeGeometry->textureCoord(tc);
+		edgeGeometry->index(idx++);
+
+		edgeGeometry->position(v0+nB_*offset);
+		edgeGeometry->normal(ns0);
+		edgeGeometry->textureCoord(nB);
+		edgeGeometry->textureCoord(tc);
+		edgeGeometry->index(idx++);
+
+		edgeGeometry->position(v1+nA_*offset);
+		edgeGeometry->normal(ns1);
+		edgeGeometry->textureCoord(nA);
+		edgeGeometry->textureCoord(tc);
+		edgeGeometry->index(idx++);
+
+
+		
+		//2nd tri
+		edgeGeometry->position(v1+nA_*offset);
+		edgeGeometry->normal(ns1);
+		edgeGeometry->textureCoord(nA);
+		edgeGeometry->textureCoord(tc);
+		edgeGeometry->index(idx++);
+
+		edgeGeometry->position(v0+nB_*offset);
+		edgeGeometry->normal(ns0);
+		edgeGeometry->textureCoord(nB);
+		edgeGeometry->textureCoord(tc);
+		edgeGeometry->index(idx++);
+
+
+		edgeGeometry->position(v1+nB_*offset);
+		edgeGeometry->normal(ns1);
+		edgeGeometry->textureCoord(nB);
+		edgeGeometry->textureCoord(tc);
+		edgeGeometry->index(idx++);
+		
 	}
-	
 
 	edgeGeometry->end();
 	
+	//MeshPtr newmesh = edgeGeometry->convertToMesh(_ent->getName()+"edge mesh");
+	//Entity *ent = mSceneMgr->createEntity(_ent->getName()+"edge entity", *newmesh);
 
 	return edgeGeometry;
 }
@@ -464,10 +485,16 @@ void MyApplication::_getMeshInformation(const MeshPtr				_mesh
 //-----------------------------------------------------------------------------
 bool MyApplication::_isEdgeARidge(const Vector3 &_nA, const Vector3 &_nB, const Real &_threshold)
 {
-	return _nA.dotProduct(_nB) < Math::Cos(_threshold);
+	Vector3 nA_norm = Vector3(_nA.x, _nA.y, _nA.z).normalisedCopy();
+	Vector3 nB_norm = Vector3(_nB.x, _nB.y, _nB.z).normalisedCopy();
+
+	return nA_norm.dotProduct(nB_norm) < Math::Cos(_threshold);
 }
 bool MyApplication::_isEdgeAValley(const Vector3 &_nA, const Vector3 &_nB, const Real &_threshold)
 {
-	return _nA.dotProduct(_nB) < -Math::Cos(_threshold);
+	Vector3 nA_norm = Vector3(_nA.x, _nA.y, _nA.z).normalisedCopy();
+	Vector3 nB_norm = Vector3(_nB.x, _nB.y, _nB.z).normalisedCopy();
+
+	return nA_norm.dotProduct(nB_norm) < Math::Cos(_threshold);
 }
 //-----------------------------------------------------------------------------

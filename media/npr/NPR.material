@@ -1,0 +1,38 @@
+vertex_program NPR/nprVP cg
+{
+	source NPR.cg
+	entry_point main_vp
+	profiles vs_1_1 arbvp1
+
+	default_params
+	{
+		param_named_auto lightPosition light_position_object_space 0
+		param_named_auto eyePosition camera_position_object_space
+		param_named_auto worldViewProj worldviewproj_matrix
+	}
+}
+
+fragment_program NPR/nprFP cg
+{
+	source NPR.cg
+	entry_point main_fp
+	profiles ps_1_1 arbfp1 fp20
+}
+
+
+material NPR/EdgeOutliner
+{
+	technique
+	{
+		pass
+		{
+			vertex_program_ref NPR/nprVP
+			{
+				
+			}
+			fragment_program_ref NPR/nprFP
+			{
+			}
+		}
+	}
+}
