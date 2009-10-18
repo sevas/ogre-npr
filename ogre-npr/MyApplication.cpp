@@ -177,7 +177,24 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 
 		if(e.degenerate)
 		{
-			Vector4 n0 = edgeData->triangleFaceNormals[e.triIndex[0]];
+			Vector3 v0 =  meshData.vertices[e.vertIndex[0]];
+			Vector3 v1 =  meshData.vertices[e.vertIndex[1]];
+
+			Vector3 ns0 = meshData.normals[e.vertIndex[0]];
+			Vector3 ns1 = meshData.normals[e.vertIndex[1]];
+
+			Vector4 nA = edgeData->triangleFaceNormals[e.triIndex[0]];
+			Vector4 nB = -nA;
+
+			edgeGeometry->position(v0);
+			edgeGeometry->normal(ns0);
+			edgeGeometry->textureCoord(nA);
+			edgeGeometry->index(idx++);
+
+			edgeGeometry->position(v1);
+			edgeGeometry->normal(ns1);
+			edgeGeometry->textureCoord(nB);
+			edgeGeometry->index(idx++);
 		}
 		else
 		{
@@ -191,16 +208,21 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 			Vector4 nB = edgeData->triangleFaceNormals[e.triIndex[1]];
 
 			
-			Real ridgeThreshold = Degree(60.0f).valueRadians();
-			Real valleyThreshold = Degree(60.0f).valueRadians();
+			Real ridgeThreshold = Degree(35.0f).valueRadians();
+			Real valleyThreshold = Degree(35.0f).valueRadians();
 
-			bool isRidge = _isEdgeARidge(Vector3(nA.x, nA.y, nA.z)
-										,Vector3(nB.x, nB.y, nB.z)
-										, 0.10f);
+
+			Vector3 nA_norm = Vector3(nA.x, nA.y, nA.z).normalisedCopy();
+			Vector3 nB_norm = Vector3(nB.x, nB.y, nB.z).normalisedCopy();
+
+			bool isRidge = _isEdgeARidge(nA_norm
+										,nB_norm
+										, ridgeThreshold);
 
 			bool isValley = _isEdgeAValley(Vector3(nA.x, nA.y, nA.z)
 										  ,Vector3(nB.x, nB.y, nB.z)
-										  ,60.0f);
+										  ,valleyThreshold);
+
 			Real tc;
 			if(isRidge  || isValley)
 			{
@@ -284,7 +306,7 @@ void MyApplication::_createLight()
 	mAnimState = mSceneMgr->createAnimationState("Light Track");
 	mAnimState->setEnabled(true);
 #else
-	mLightNode->setPosition(500, 500, 500);
+	mLightNode->setPosition(0, 500, 500);
 #endif
 }
 //-----------------------------------------------------------------------------
@@ -442,7 +464,7 @@ void MyApplication::_getMeshInformation(const MeshPtr				_mesh
 //-----------------------------------------------------------------------------
 bool MyApplication::_isEdgeARidge(const Vector3 &_nA, const Vector3 &_nB, const Real &_threshold)
 {
-	return _nA.dotProduct(_nB) < -Math::Cos(_threshold);
+	return _nA.dotProduct(_nB) < Math::Cos(_threshold);
 }
 bool MyApplication::_isEdgeAValley(const Vector3 &_nA, const Vector3 &_nB, const Real &_threshold)
 {
