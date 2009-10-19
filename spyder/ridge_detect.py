@@ -28,7 +28,7 @@ def deg2rad(val):
 
 
 def isRidge(a, b, thresh):
-    dotp = N.dot(a, b) 
+    dotp = np.dot(a, b) 
     print "ab angle : %3f    (%.1f)" % (m.acos(dotp), rad2deg(m.acos(dotp)))
     print dotp, m.cos(deg2rad(float(thresh)))
     return dotp < m.cos(deg2rad(float(thresh)))
@@ -39,20 +39,20 @@ def isRidge(a, b, thresh):
 
 
 if __name__=="__main__":
-    nA = N.array([126, 417, 123])
-    nB = N.array([-126, 417, -123])
+    nA = np.array([126, 417, 123])
+    nB = np.array([-126, 417, -123])
 
 
     thresh_angle = 60.0
 
     nA, nB = normalize(nA), normalize(nB)
-    print isRidge(b, a, thresh_angle)
+    print isRidge(nA, nB, thresh_angle)
 
-    a = N.array([1, 0, 0])
-    b = N.array([1.0/m.sqrt(2), 0, 1.0/m.sqrt(2)])
+    a = np.array([1, 0, 0])
+    b = np.array([1.0/m.sqrt(2), 0, 1.0/m.sqrt(2)])
     print isRidge(b, a, thresh_angle)
     
-    a, b = N.array([1, 0, 0]), N.array([0, 0, 1])
+    a, b = np.array([1, 0, 0]), np.array([0, 0, 1])
     print isRidge(b, a, thresh_angle)
 
     

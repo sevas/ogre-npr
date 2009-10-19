@@ -6,11 +6,29 @@ vertex_program NPR/nprVP cg
 
 	default_params
 	{
-		param_named_auto lightPosition light_position_object_space 0
-		param_named_auto eyePosition camera_position_object_space
+		//param_named_auto lightPosition light_position_object_space 0
+		param_named_auto eyePosition camera_position
 		param_named_auto worldViewProj worldviewproj_matrix
+		param_named_auto modelWorld world_matrix
 	}
 }
+
+
+//vertex_program NPR/nprVP_d cg
+//{
+// 	source NPR.cg
+// 	entry_point main_vp_debug
+// 	profiles vs_1_1 arbvp1
+// 
+// 	default_params
+// 	{
+// 		param_named_auto lightPosition light_position_object_space 0
+// 		param_named_auto eyePosition camera_position_object_space
+// 		param_named_auto worldViewProj worldviewproj_matrix
+// 	}
+//}
+
+
 
 fragment_program NPR/nprFP cg
 {
@@ -26,9 +44,11 @@ material NPR/EdgeOutliner
 	{
 		pass
 		{
+			alpha_rejection greater_equal 1
+			cull_hardware  none
+
 			vertex_program_ref NPR/nprVP
-			{
-				
+			{				
 			}
 			fragment_program_ref NPR/nprFP
 			{

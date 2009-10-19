@@ -133,7 +133,7 @@ void MyApplication::_populate()
 	//dragon->translate(0, 15, 0);
 
 
-	_loadMesh("Rectangle01", Vector3(0, 0, 0));
+	//_loadMesh("Rectangle01", Vector3(0, 0, 0));
 
 }
 //-----------------------------------------------------------------------------
@@ -183,8 +183,8 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 			v0 =  meshData.vertices[e.vertIndex[0]];
 			v1 =  meshData.vertices[e.vertIndex[1]];
 
-			ns0 = meshData.normals[e.vertIndex[0]];
-			ns1 = meshData.normals[e.vertIndex[1]];
+			ns0 = meshData.normals[e.vertIndex[0]].normalisedCopy();
+			ns1 = meshData.normals[e.vertIndex[1]].normalisedCopy();
 
 			nA = edgeData->triangleFaceNormals[e.triIndex[0]];
 			nB = -nA;
@@ -195,8 +195,8 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 			v0 =  meshData.vertices[e.vertIndex[0]];
 			v1 =  meshData.vertices[e.vertIndex[1]];
 
-			ns0 = meshData.normals[e.vertIndex[0]];
-			ns1 = meshData.normals[e.vertIndex[1]];
+			ns0 = meshData.normals[e.vertIndex[0]].normalisedCopy();
+			ns1 = meshData.normals[e.vertIndex[1]].normalisedCopy();
 
 			nA = edgeData->triangleFaceNormals[e.triIndex[0]];
 			nB = edgeData->triangleFaceNormals[e.triIndex[1]];
@@ -224,43 +224,43 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 
 		Real offset = 0.5f;
 
-		edgeGeometry->position(v0+nA_*offset);
+		edgeGeometry->position(v0);
 		edgeGeometry->normal(ns0);
-		edgeGeometry->textureCoord(nA);
+		edgeGeometry->textureCoord(nA_);
 		edgeGeometry->textureCoord(tc);
 		edgeGeometry->index(idx++);
 
-		edgeGeometry->position(v0+nB_*offset);
+		edgeGeometry->position(v0);
 		edgeGeometry->normal(ns0);
-		edgeGeometry->textureCoord(nB);
+		edgeGeometry->textureCoord(nB_);
 		edgeGeometry->textureCoord(tc);
 		edgeGeometry->index(idx++);
 
-		edgeGeometry->position(v1+nA_*offset);
+		edgeGeometry->position(v1);
 		edgeGeometry->normal(ns1);
-		edgeGeometry->textureCoord(nA);
+		edgeGeometry->textureCoord(nA_);
 		edgeGeometry->textureCoord(tc);
 		edgeGeometry->index(idx++);
 
 
 		
 		//2nd tri
-		edgeGeometry->position(v1+nA_*offset);
+		edgeGeometry->position(v1);
 		edgeGeometry->normal(ns1);
-		edgeGeometry->textureCoord(nA);
+		edgeGeometry->textureCoord(nA_);
 		edgeGeometry->textureCoord(tc);
 		edgeGeometry->index(idx++);
 
-		edgeGeometry->position(v0+nB_*offset);
+		edgeGeometry->position(v0);
 		edgeGeometry->normal(ns0);
-		edgeGeometry->textureCoord(nB);
+		edgeGeometry->textureCoord(nB_);
 		edgeGeometry->textureCoord(tc);
 		edgeGeometry->index(idx++);
 
 
-		edgeGeometry->position(v1+nB_*offset);
+		edgeGeometry->position(v1);
 		edgeGeometry->normal(ns1);
-		edgeGeometry->textureCoord(nB);
+		edgeGeometry->textureCoord(nB_);
 		edgeGeometry->textureCoord(tc);
 		edgeGeometry->index(idx++);
 		
@@ -320,8 +320,8 @@ void MyApplication::_createLight()
 	{
 		key = track->createNodeKeyFrame(phi * (totalTime/ (2*Math::PI)));
 		key->setTranslate(Vector3(amplitude*Math::Cos(phi)
-								 ,amplitude*Math::Sin(phi)
-								 ,0));
+								 ,amplitude
+								 ,amplitude*Math::Sin(phi)));
 	}
 
 	mAnimState = mSceneMgr->createAnimationState("Light Track");
