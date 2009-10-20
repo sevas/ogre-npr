@@ -1,4 +1,4 @@
-vertex_program NPR/nprVP cg
+vertex_program NPR/EdgeOutlinerVP cg
 {
 	source NPR.cg
 	entry_point main_vp
@@ -30,7 +30,7 @@ vertex_program NPR/nprVP cg
 
 
 
-fragment_program NPR/nprFP cg
+fragment_program NPR/EdgeOutlinerFP cg
 {
 	source NPR.cg
 	entry_point main_fp
@@ -45,12 +45,13 @@ material NPR/EdgeOutliner
 		pass
 		{
 			alpha_rejection greater_equal 1
-			cull_hardware  none
+			cull_hardware none
+			depth_write off
 
-			vertex_program_ref NPR/nprVP
+			vertex_program_ref NPR/EdgeOutlinerVP
 			{				
 			}
-			fragment_program_ref NPR/nprFP
+			fragment_program_ref NPR/EdgeOutlinerFP
 			{
 			}
 		}

@@ -19,16 +19,15 @@ struct OutData
 
 
 OutData main_vp( InData IN,
-			 // parameters
-             //uniform float3 lightPosition, // object space
-			 uniform float3 eyePosition,   // object space
-			 uniform float4x4 worldViewProj,
-             uniform float4x4 modelWorld)
+                 // parameters
+                 uniform float3   eyePosition,   // world space space
+                 uniform float4x4 worldViewProj,
+                 uniform float4x4 modelWorld)
 {
     OutData OUT;
 
-	float4 WorldPos = mul( float4(IN.position, 1), modelWorld );
-	float3 P = WorldPos.xyz; 
+	float4 worldPos = mul( float4(IN.position, 1), modelWorld );
+	float3 P = worldPos.xyz; 
 	
 	float3 N = mul(IN.normal, (float3x3)modelWorld);
 	float3 T = mul(IN.tangent, (float3x3)modelWorld);
@@ -40,18 +39,16 @@ OutData main_vp( InData IN,
 	float EdotT = dot(E,T);
 
 	float extend = 0.1 * (length(E)/75);
-    
-	float3 newPos = IN.position + IN.tangent * extend; 
+	float3 newPos = IN.position + IN.normal * extend; 
 
-	if ( ( EdotN * EdotT ) < 0 )	// silhouette detection
+	if ( ( EdotN * EdotT ) < 0 )	// silhouette detection : one triangle facing, one triangle backfacing
 	{
 		OUT.color.a = 1;	// make this visible
 		if ( EdotN > 0 )	// extend only the front facing vertices
 		{
-			newPos = IN.position - IN.tangent * extend;
+			newPos = IN.position - IN.normal * extend;
 		}
 	}
-
 
     OUT.color.a += IN.markedEdge;
     OUT.position = mul(  worldViewProj, float4( newPos, 1) ); 
@@ -61,33 +58,29 @@ OutData main_vp( InData IN,
 
 
 
+/* void main_vp_debug(float4 position      : POSITION, */
+/*                    float3 normal		: NORMAL, */
+/*                    float3 tangent		: TEXCOORD0, */
+/*                    float  markedEdge    : TEXCOORD1, */
+/*                    // outputs */
+/*                    out float4 oPosition : POSITION, */
+/*                    out float4 oColor	: COLOR, */
 
-
-void main_vp_debug(float4 position      : POSITION,
-                   float3 normal		: NORMAL,
-                   float3 tangent		: TEXCOORD0,
-                   float  markedEdge    : TEXCOORD1,
-                   // outputs
-                   out float4 oPosition : POSITION,
-                   out float4 oColor	: COLOR,
-
-                   // parameters
-                   uniform float3 lightPosition, // object space
-                   uniform float3 eyePosition,   // object space
-                   uniform float4x4 worldViewProj)
-{
-	// calculate output position
-    float4 P = position + float4(tangent.x, tangent.y, tangent.z, 0.0)*0.2f;
-	oPosition = mul(worldViewProj, P);
+/*                    // parameters */
+/*                    uniform float3 lightPosition, // object space */
+/*                    uniform float3 eyePosition,   // object space */
+/*                    uniform float4x4 worldViewProj) */
+/* { */
+/* 	// calculate output position */
+/*     float4 P = position + float4(tangent.x, tangent.y, tangent.z, 0.0)*0.2f; */
+/* 	oPosition = mul(worldViewProj, P); */
 	
 
-	if(markedEdge == 1.0f)
-		oColor = 0;
-	else
-		oColor = float4(1.0f,0.0f,0.0f,1.0f);
-}
-
-
+/* 	if(markedEdge == 1.0f) */
+/* 		oColor = 0; */
+/* 	else */
+/* 		oColor = float4(1.0f,0.0f,0.0f,1.0f); */
+/* } */
 
 
 

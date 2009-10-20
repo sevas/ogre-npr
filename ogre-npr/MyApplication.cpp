@@ -133,7 +133,7 @@ void MyApplication::_populate()
 	//dragon->translate(0, 15, 0);
 
 
-	//_loadMesh("Rectangle01", Vector3(0, 0, 0));
+	_loadMesh("Rectangle01", Vector3(0, 0, 0));
 
 }
 //-----------------------------------------------------------------------------
@@ -174,29 +174,24 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 		EdgeData::Edge e = edgeData->edgeGroups[0].edges[i];
 
 		Vector3 v0, v1;
-		Vector3 ns0, ns1;
 		Vector4 nA, nB ;
-		Real tc;
+		Real markedEdge;
 
 		if(e.degenerate)
 		{
 			v0 =  meshData.vertices[e.vertIndex[0]];
 			v1 =  meshData.vertices[e.vertIndex[1]];
 
-			ns0 = meshData.normals[e.vertIndex[0]].normalisedCopy();
-			ns1 = meshData.normals[e.vertIndex[1]].normalisedCopy();
-
 			nA = edgeData->triangleFaceNormals[e.triIndex[0]];
 			nB = -nA;
-			tc = 1.0f;
+			markedEdge = 1.0f;
 		}
 		else
 		{
 			v0 =  meshData.vertices[e.vertIndex[0]];
 			v1 =  meshData.vertices[e.vertIndex[1]];
-
-			ns0 = meshData.normals[e.vertIndex[0]].normalisedCopy();
-			ns1 = meshData.normals[e.vertIndex[1]].normalisedCopy();
+			//ns0 = meshData.normals[e.vertIndex[0]];
+			//ns1 = meshData.normals[e.vertIndex[1]];
 
 			nA = edgeData->triangleFaceNormals[e.triIndex[0]];
 			nB = edgeData->triangleFaceNormals[e.triIndex[1]];
@@ -214,7 +209,7 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 										  ,Vector3(nB.x, nB.y, nB.z)
 										  ,valleyThreshold);
 
-			tc = (isRidge  || isValley) ? 1.0f : 0.0f;
+			markedEdge = (isRidge || isValley) ? 1.0f : 0.0f;
 		}
 
 		//build degenerate triangles for this edge
@@ -222,55 +217,47 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 		Vector3 nA_ = Vector3(nA.x, nA.y, nA.z).normalisedCopy();
 		Vector3 nB_ = Vector3(nB.x, nB.y, nB.z).normalisedCopy();
 
-		Real offset = 0.5f;
-
 		edgeGeometry->position(v0);
-		edgeGeometry->normal(ns0);
-		edgeGeometry->textureCoord(nA_);
-		edgeGeometry->textureCoord(tc);
+		edgeGeometry->normal(nA_);
+		edgeGeometry->textureCoord(nB_);
+		edgeGeometry->textureCoord(markedEdge);
 		edgeGeometry->index(idx++);
 
 		edgeGeometry->position(v0);
-		edgeGeometry->normal(ns0);
-		edgeGeometry->textureCoord(nB_);
-		edgeGeometry->textureCoord(tc);
+		edgeGeometry->normal(nB_);
+		edgeGeometry->textureCoord(nA_);
+		edgeGeometry->textureCoord(markedEdge);
 		edgeGeometry->index(idx++);
 
 		edgeGeometry->position(v1);
-		edgeGeometry->normal(ns1);
-		edgeGeometry->textureCoord(nA_);
-		edgeGeometry->textureCoord(tc);
+		edgeGeometry->normal(nA_);
+		edgeGeometry->textureCoord(nB_);
+		edgeGeometry->textureCoord(markedEdge);
 		edgeGeometry->index(idx++);
 
-
-		
 		//2nd tri
 		edgeGeometry->position(v1);
-		edgeGeometry->normal(ns1);
-		edgeGeometry->textureCoord(nA_);
-		edgeGeometry->textureCoord(tc);
+		edgeGeometry->normal(nA_);
+		edgeGeometry->textureCoord(nB_);
+		edgeGeometry->textureCoord(markedEdge);
 		edgeGeometry->index(idx++);
 
 		edgeGeometry->position(v0);
-		edgeGeometry->normal(ns0);
-		edgeGeometry->textureCoord(nB_);
-		edgeGeometry->textureCoord(tc);
+		edgeGeometry->normal(nB_);
+		edgeGeometry->textureCoord(nA_);
+		edgeGeometry->textureCoord(markedEdge);
 		edgeGeometry->index(idx++);
-
 
 		edgeGeometry->position(v1);
-		edgeGeometry->normal(ns1);
-		edgeGeometry->textureCoord(nB_);
-		edgeGeometry->textureCoord(tc);
+		edgeGeometry->normal(nB_);
+		edgeGeometry->textureCoord(nA_);
+		edgeGeometry->textureCoord(markedEdge);
 		edgeGeometry->index(idx++);
-		
 	}
 
 	edgeGeometry->end();
 	
-	//MeshPtr newmesh = edgeGeometry->convertToMesh(_ent->getName()+"edge mesh");
-	//Entity *ent = mSceneMgr->createEntity(_ent->getName()+"edge entity", *newmesh);
-
+	//edgeGeometry->setRenderQueueGroup(edgeGeometry->getRenderQueueGroup() + 1);
 	return edgeGeometry;
 }
 //-----------------------------------------------------------------------------
