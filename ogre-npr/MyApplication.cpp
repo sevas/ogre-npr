@@ -111,17 +111,19 @@ void MyApplication::_updateDebugOverlay()
 //-----------------------------------------------------------------------------
 void MyApplication::_populate()
 {
-	//_loadMesh("TorusKnot01", Vector3(0, 0, 0), 1.0f);
-	//_loadMesh("Teapot01", Vector3(0, 0, 0), 1.0f);
-	//_loadMesh("Gengon01", Vector3(50, 0, 50), 1.0f);
-	//_loadMesh("Cone01", Vector3(0, 0, 0), 1.0f);
-	_loadMesh("Box01", Vector3(0, 0, 0), 1.0f);
+	_loadMesh("TorusKnot01", Vector3(-50, 0, 0), 1.0f);
+	_loadMesh("Teapot01",	 Vector3(50, 0, 0), 1.0f);
 	
-	_loadMesh("sphere", Vector3(0, 0, 0), 1.0f);
+	_loadMesh("Gengon01",	Vector3(-50, 0, 50), 1.0f);
+	_loadMesh("Cone01",		Vector3(50, 0, 50), 1.0f);
+	
+	_loadMesh("Box01",		Vector3(-50, 0, -50), 1.0f);
+	_loadMesh("Cylinder01", Vector3(50, 0, -50), 1.0f);
+	
 	//_loadMesh("sphere2", Vector3(500, 0, 0), 1.0f);
 	////
 	
-	//SceneNode *bunny = _loadMesh("bunny", Vector3(0, 0, 0), 20.0f);
+	//SceneNode *bunny = _loadMesh("bunny", Vector3(-50, 0, 100), 20.0f);
 
 	//bunny->scale(20, 20, 20);
 	//bunny->pitch(Degree(-90));
@@ -130,12 +132,12 @@ void MyApplication::_populate()
 
 	//SceneNode *dragon = _loadMesh("dragon", Vector3(50, 0, 100), 20.0f);
 
-	////dragon->scale(20, 20, 20);
+	//dragon->scale(20, 20, 20);
 	//dragon->pitch(Degree(180));
 	//dragon->translate(0, 15, 0);
 
 
-	//_loadMesh("Plane01", Vector3(0, 0, 0), 1.0f);
+	_loadMesh("Rectangle01", Vector3(0, 0, 0), 1.0f);
 
 
 
@@ -190,7 +192,7 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 
 			nA = edgeData->triangleFaceNormals[e.triIndex[0]];
 			nB = -nA;
-			markedEdge = 1.0f;
+			markedEdge = 2.0f;
 		}
 		else
 		{

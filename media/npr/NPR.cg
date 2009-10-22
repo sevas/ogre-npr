@@ -20,17 +20,14 @@ struct OutData
 
 OutData main_vp( InData IN,
                  // parameters
-                 uniform float3   eyePosition,   // world space space
-                 uniform float4x4 worldViewProj,
-                 uniform float4x4 modelWorld)
+                 uniform float3   eyePosition,   // object space
+                 uniform float4x4 worldViewProj)
 {
     OutData OUT;
 
-	float4 worldPos = mul( float4(IN.position, 1), modelWorld );
-	float3 P = worldPos.xyz; 
-	
-	float3 N = mul(IN.normal, (float3x3)modelWorld);
-	float3 T = mul(IN.tangent, (float3x3)modelWorld);
+    float3 P = IN.position;
+    float3 N = IN.normal;
+    float3 T = IN.tangent;
     float3 E = P - eyePosition.xyz;
     
     OUT.color = 0.0f;
@@ -39,7 +36,7 @@ OutData main_vp( InData IN,
 	float EdotT = dot(E,T);
  
 	float extend = 0.1f * (length(E)/75.0f);
-	float3 newPos = IN.position + IN.normal * extend; 
+	float3 newPos = IN.position + IN.tangent * extend; 
 
 	if ( ( EdotN * EdotT ) < 0 )	// silhouette detection : one triangle facing, one triangle backfacing
 	{
@@ -47,11 +44,18 @@ OutData main_vp( InData IN,
 		OUT.color.a = 1;	// make this visible
 		if ( EdotT > 0 )	// extend only the front facing vertices
 		{
-            newPos = IN.position - IN.normal * extend;
+            newPos = IN.position - IN.tangent * extend;
 		}
 	}
 
-    OUT.color.a += IN.markedEdge;
+    if(IN.markedEdge == 1.0f)
+        OUT.color.a += IN.markedEdge;
+
+    /* else if(IN.markedEdge == 2.0f) */
+    /* { */
+    /*     newPos = IN.position + float3(0,1,0) * extend; */
+    /*     OUT.color.a = 1; */
+    /* } */
 
     OUT.position = mul(  worldViewProj, float4( newPos, 1) ); 
 
