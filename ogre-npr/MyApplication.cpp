@@ -5,7 +5,7 @@
 #include <sstream>
 #include <boost/foreach.hpp>
 
-//#define ANIMATE_LIGHT
+#define ANIMATE_LIGHT
 
 void MyApplication::createScene()
 {
@@ -123,18 +123,18 @@ void MyApplication::_populate()
 	//_loadMesh("sphere2", Vector3(500, 0, 0), 1.0f);
 	////
 	
-	//SceneNode *bunny = _loadMesh("bunny", Vector3(-50, 0, 100), 20.0f);
+	/*SceneNode *bunny = _loadMesh("bunny", Vector3(-50, 0, 100), 20.0f);
 
-	//bunny->scale(20, 20, 20);
-	//bunny->pitch(Degree(-90));
-	//bunny->translate(0, 20, 0);
+	bunny->scale(20, 20, 20);
+	bunny->pitch(Degree(-90));
+	bunny->translate(0, 20, 0);
 
 
-	//SceneNode *dragon = _loadMesh("dragon", Vector3(50, 0, 100), 20.0f);
+	SceneNode *dragon = _loadMesh("dragon", Vector3(50, 0, 100), 20.0f);
 
-	//dragon->scale(20, 20, 20);
-	//dragon->pitch(Degree(180));
-	//dragon->translate(0, 15, 0);
+	dragon->scale(20, 20, 20);
+	dragon->pitch(Degree(180));
+	dragon->translate(0, 15, 0);*/
 
 
 	_loadMesh("Rectangle01", Vector3(0, 0, 0), 1.0f);
@@ -150,6 +150,7 @@ SceneNode* MyApplication::_loadMesh(const String &_name, const Vector3 &_pos, Re
 	
 	//_setCelShadingMaterial(ent);
 	ent->setMaterialName("NPR/Face");
+	
 	ManualObject *edges = _createQuadFinGeometry(ent);
 	edges->setVisible(true);
 

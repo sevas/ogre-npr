@@ -35,7 +35,7 @@ void main_vp(float4 position	: POSITION,
 	if (diffuse == 0) specular = 0;
 
 	// Edge detection, dot eye and normal vectors
-	edge = max(dot(N, E), 0);
+	edge = 1.0f;//max(dot(N, E), 0);
 }
 
 void main_fp(float diffuseIn 	: TEXCOORD0,
