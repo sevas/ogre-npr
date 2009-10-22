@@ -24,7 +24,7 @@ protected:
 
 public:
     void createScene();
-
+	ManualObject*	_createQuadFinGeometry(Entity*);
 protected:
     bool frameStarted(const FrameEvent& evt);
     bool frameEnded(const FrameEvent& evt);
@@ -39,12 +39,15 @@ protected:
     void			_createSphere(int, Vector3);
 	SceneNode*		_loadMesh(const String&, const Vector3&, Real);
 	void			_setCelShadingMaterial(Entity*);
-	ManualObject*	_createQuadFinGeometry(Entity*);
+
 	void			_getMeshInformation(const MeshPtr mesh,
 										MeshData &meshData,
 										const Vector3 &position,
 										const Quaternion &orient,
 										const Vector3 &scale);
+
+	void _loadScene(const String&, SceneNode*);
+
 	void _buildEdgeQuad(const Vector3&, const Vector3&
 						, const Vector4&,const Vector4&
 						, const Real, unsigned int

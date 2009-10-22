@@ -4,8 +4,35 @@
 
 #include <sstream>
 #include <boost/foreach.hpp>
+#include "OgreMaxScene.hpp"
 
 #define ANIMATE_LIGHT
+
+
+class MyCallback : public OgreMax::OgreMaxSceneCallback
+{
+public:
+	MyCallback(MyApplication *_app):mApp(_app) {};
+
+	void CreatedEntity(const OgreMax::OgreMaxScene* scene, Ogre::Entity* entity)
+	{
+		entity->setMaterialName("NPR/Face");
+		ManualObject *edges = mApp->_createQuadFinGeometry(entity);
+		edges->setVisible(true);
+
+		SceneNode *node = entity->getParentSceneNode();
+
+		if (node)
+		{
+			node->attachObject(edges);
+			node->setVisible(true);	
+		}
+	}
+protected:
+	MyApplication *mApp;
+
+};
+
 
 void MyApplication::createScene()
 {
@@ -140,6 +167,24 @@ void MyApplication::_populate()
 	_loadMesh("Rectangle01", Vector3(0, 0, 0), 1.0f);
 
 
+	SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode("titanic_root");
+	_loadScene("titanic", node);
+
+	node->translate(0, 0, 1000);
+	node->scale(0.1, 0.1, 0.1);
+}
+//-----------------------------------------------------------------------------
+void MyApplication::_loadScene(const String &_name, SceneNode* _node)
+{
+	OgreMax::OgreMaxScene sceneLoader;
+
+	MyCallback callback(this);
+	sceneLoader.Load("../media/"+_name+"/"+_name+".scene", mWindow
+		, OgreMax::OgreMaxScene::SKIP_ENVIRONMENT |
+		OgreMax::OgreMaxScene::SKIP_SKY |
+		OgreMax::OgreMaxScene::SKIP_TERRAIN|
+		OgreMax::OgreMaxScene::SKIP_EXTERNALS
+					,mSceneMgr,_node, &callback);
 
 }
 //-----------------------------------------------------------------------------
