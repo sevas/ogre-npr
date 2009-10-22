@@ -135,9 +135,11 @@ void MyApplication::_populate()
 
 	_loadMesh("Rectangle01", Vector3(0, 0, 0));
 
+
+
 }
 //-----------------------------------------------------------------------------
-SceneNode* MyApplication::_loadMesh(const String &_name, const Vector3 &_pos)
+SceneNode* MyApplication::_loadMesh(const String &_name, const Vector3 &_pos, Real _scale=1.0f)
 {
 	Entity *ent = mSceneMgr->createEntity(_name, _name+".mesh");
 	SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode(_name+"Node", _pos);
@@ -190,12 +192,9 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 		{
 			v0 =  meshData.vertices[e.vertIndex[0]];
 			v1 =  meshData.vertices[e.vertIndex[1]];
-			//ns0 = meshData.normals[e.vertIndex[0]];
-			//ns1 = meshData.normals[e.vertIndex[1]];
 
 			nA = edgeData->triangleFaceNormals[e.triIndex[0]];
 			nB = edgeData->triangleFaceNormals[e.triIndex[1]];
-
 			
 			Real ridgeThreshold = Degree(35.0f).valueRadians();
 			Real valleyThreshold = Degree(35.0f).valueRadians();
@@ -210,55 +209,78 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 										  ,valleyThreshold);
 
 			markedEdge = (isRidge || isValley) ? 1.0f : 0.0f;
+		
+
+			//build degenerate triangles for this edge
+			/*Vector3 nA_ = Vector3(nA.x, nA.y, nA.z).normalisedCopy();
+			Vector3 nB_ = Vector3(nB.x, nB.y, nB.z).normalisedCopy();*/
 		}
 
-		//build degenerate triangles for this edge
-		// 1st tri
-		Vector3 nA_ = Vector3(nA.x, nA.y, nA.z).normalisedCopy();
-		Vector3 nB_ = Vector3(nB.x, nB.y, nB.z).normalisedCopy();
-
-		edgeGeometry->position(v0);
-		edgeGeometry->normal(nA_);
-		edgeGeometry->textureCoord(nB_);
-		edgeGeometry->textureCoord(markedEdge);
-		edgeGeometry->index(idx++);
-
-		edgeGeometry->position(v0);
-		edgeGeometry->normal(nB_);
-		edgeGeometry->textureCoord(nA_);
-		edgeGeometry->textureCoord(markedEdge);
-		edgeGeometry->index(idx++);
-
-		edgeGeometry->position(v1);
-		edgeGeometry->normal(nA_);
-		edgeGeometry->textureCoord(nB_);
-		edgeGeometry->textureCoord(markedEdge);
-		edgeGeometry->index(idx++);
-
-		//2nd tri
-		edgeGeometry->position(v1);
-		edgeGeometry->normal(nA_);
-		edgeGeometry->textureCoord(nB_);
-		edgeGeometry->textureCoord(markedEdge);
-		edgeGeometry->index(idx++);
-
-		edgeGeometry->position(v0);
-		edgeGeometry->normal(nB_);
-		edgeGeometry->textureCoord(nA_);
-		edgeGeometry->textureCoord(markedEdge);
-		edgeGeometry->index(idx++);
-
-		edgeGeometry->position(v1);
-		edgeGeometry->normal(nB_);
-		edgeGeometry->textureCoord(nA_);
-		edgeGeometry->textureCoord(markedEdge);
-		edgeGeometry->index(idx++);
+		_buildEdgeQuad(v0, v1, nA, nB, markedEdge, idx, edgeGeometry);
+		idx+=6;
 	}
 
 	edgeGeometry->end();
 	
 	//edgeGeometry->setRenderQueueGroup(edgeGeometry->getRenderQueueGroup() + 1);
 	return edgeGeometry;
+}
+//-----------------------------------------------------------------------------
+void MyApplication::_buildEdgeQuad(  const Vector3 &_v0, const Vector3&_v1
+								   , const Vector4 &_nA,const Vector4&_nB
+								   , const Real _markedEdge,unsigned int _idx
+								   , ManualObject *_edgeGeometry)
+{
+	Vector3 nA = Vector3(_nA.x, _nA.y, _nA.z).normalisedCopy();
+	Vector3 nB = Vector3(_nB.x, _nB.y, _nB.z).normalisedCopy();
+
+	/* 1st tri
+	   1 __ 2
+		| /
+		|/
+		3
+	*/
+	_edgeGeometry->position(_v0);
+	_edgeGeometry->normal(nA);
+	_edgeGeometry->textureCoord(nB);
+	_edgeGeometry->textureCoord(_markedEdge);
+	_edgeGeometry->index(_idx++);
+
+	_edgeGeometry->position(_v0);
+	_edgeGeometry->normal(nB);
+	_edgeGeometry->textureCoord(nA);
+	_edgeGeometry->textureCoord(_markedEdge);
+	_edgeGeometry->index(_idx++);
+
+	_edgeGeometry->position(_v1);
+	_edgeGeometry->normal(nA);
+	_edgeGeometry->textureCoord(nB);
+	_edgeGeometry->textureCoord(_markedEdge);
+	_edgeGeometry->index(_idx++);
+
+	/* 2nd tri
+	      6
+		 /|
+	    /_|
+	   4   5
+	*/
+	_edgeGeometry->position(_v1);
+	_edgeGeometry->normal(nA);
+	_edgeGeometry->textureCoord(nB);
+	_edgeGeometry->textureCoord(_markedEdge);
+	_edgeGeometry->index(_idx++);
+
+	_edgeGeometry->position(_v0);
+	_edgeGeometry->normal(nB);
+	_edgeGeometry->textureCoord(nA);
+	_edgeGeometry->textureCoord(_markedEdge);
+	_edgeGeometry->index(_idx++);
+
+	_edgeGeometry->position(_v1);
+	_edgeGeometry->normal(nB);
+	_edgeGeometry->textureCoord(nA);
+	_edgeGeometry->textureCoord(_markedEdge);
+	_edgeGeometry->index(_idx++);
 }
 //-----------------------------------------------------------------------------
 void MyApplication::_setCelShadingMaterial(Entity *_ent)

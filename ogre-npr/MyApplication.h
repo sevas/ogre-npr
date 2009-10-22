@@ -37,7 +37,7 @@ protected:
 	void			_populate();
     void			_createLight();
     void			_createSphere(int, Vector3);
-	SceneNode*		_loadMesh(const String&, const Vector3&);
+	SceneNode*		_loadMesh(const String&, const Vector3&, Real);
 	void			_setCelShadingMaterial(Entity*);
 	ManualObject*	_createQuadFinGeometry(Entity*);
 	void			_getMeshInformation(const MeshPtr mesh,
@@ -45,6 +45,10 @@ protected:
 										const Vector3 &position,
 										const Quaternion &orient,
 										const Vector3 &scale);
+	void _buildEdgeQuad(const Vector3&, const Vector3&
+						, const Vector4&,const Vector4&
+						, const Real, unsigned int
+						, ManualObject*);
 
 	inline bool _isEdgeARidge(const Vector3&, const Vector3&, const Real&);
 	inline bool _isEdgeAValley(const Vector3&, const Vector3&, const Real&);

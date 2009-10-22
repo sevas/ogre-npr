@@ -4,7 +4,7 @@ struct InData
 {
     float3 position   : POSITION;
     float3 normal     : NORMAL;
-    float3 tangent	  : TEXCOORD0;
+    float3 tangent    : TEXCOORD0;
     float  markedEdge : TEXCOORD1;
 };
 
@@ -43,14 +43,26 @@ OutData main_vp( InData IN,
 
 	if ( ( EdotN * EdotT ) < 0 )	// silhouette detection : one triangle facing, one triangle backfacing
 	{
+        OUT.color.b = 1;
 		OUT.color.a = 1;	// make this visible
 		if ( EdotN > 0 )	// extend only the front facing vertices
 		{
-			newPos = IN.position - IN.normal * extend;
+            newPos = IN.position - IN.normal * extend;
 		}
 	}
+    else
+    {
+        OUT.color.rgba = float4(0.3f, 0.3f, 0.3f, 1.0f) ;
+    }
 
-    OUT.color.a += IN.markedEdge;
+
+    if(IN.markedEdge > 0.0f)
+    {
+        OUT.color.a += IN.markedEdge;
+        OUT.color.r += IN.markedEdge;
+    }
+
+
     OUT.position = mul(  worldViewProj, float4( newPos, 1) ); 
 
     return OUT;
