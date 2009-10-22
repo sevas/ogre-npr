@@ -31,37 +31,27 @@ OutData main_vp( InData IN,
 	
 	float3 N = mul(IN.normal, (float3x3)modelWorld);
 	float3 T = mul(IN.tangent, (float3x3)modelWorld);
-	float3 E = P - eyePosition.xyz;
-
-    OUT.color = 0;
+    float3 E = P - eyePosition.xyz;
+    
+    OUT.color = 0.0f;
 
 	float EdotN = dot(E,N);
 	float EdotT = dot(E,T);
-
-	float extend = 0.1 * (length(E)/75);
+ 
+	float extend = 0.1f * (length(E)/75.0f);
 	float3 newPos = IN.position + IN.normal * extend; 
 
 	if ( ( EdotN * EdotT ) < 0 )	// silhouette detection : one triangle facing, one triangle backfacing
 	{
-        OUT.color.b = 1;
+ 
 		OUT.color.a = 1;	// make this visible
-		if ( EdotN > 0 )	// extend only the front facing vertices
+		if ( EdotT > 0 )	// extend only the front facing vertices
 		{
             newPos = IN.position - IN.normal * extend;
 		}
 	}
-    else
-    {
-        OUT.color.rgba = float4(0.3f, 0.3f, 0.3f, 1.0f) ;
-    }
 
-
-    if(IN.markedEdge > 0.0f)
-    {
-        OUT.color.a += IN.markedEdge;
-        OUT.color.r += IN.markedEdge;
-    }
-
+    OUT.color.a += IN.markedEdge;
 
     OUT.position = mul(  worldViewProj, float4( newPos, 1) ); 
 

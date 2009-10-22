@@ -111,29 +111,31 @@ void MyApplication::_updateDebugOverlay()
 //-----------------------------------------------------------------------------
 void MyApplication::_populate()
 {
-	_loadMesh("TorusKnot01", Vector3(50, 0, 0));
-	_loadMesh("Teapot01", Vector3(-50, 0, 0));
-	_loadMesh("Gengon01", Vector3(50, 0, 50));
-	_loadMesh("Cone01", Vector3(-50, 0, 50));
-	_loadMesh("Box01", Vector3(50, 0, -50));
-	_loadMesh("Cylinder01", Vector3(-50, 0, -50));
-	//
+	//_loadMesh("TorusKnot01", Vector3(0, 0, 0), 1.0f);
+	//_loadMesh("Teapot01", Vector3(0, 0, 0), 1.0f);
+	//_loadMesh("Gengon01", Vector3(50, 0, 50), 1.0f);
+	//_loadMesh("Cone01", Vector3(0, 0, 0), 1.0f);
+	_loadMesh("Box01", Vector3(0, 0, 0), 1.0f);
 	
-	//SceneNode *bunny = _loadMesh("bunny", Vector3(-50, 0, 100));
+	_loadMesh("sphere", Vector3(0, 0, 0), 1.0f);
+	//_loadMesh("sphere2", Vector3(500, 0, 0), 1.0f);
+	////
+	
+	//SceneNode *bunny = _loadMesh("bunny", Vector3(0, 0, 0), 20.0f);
 
 	//bunny->scale(20, 20, 20);
 	//bunny->pitch(Degree(-90));
 	//bunny->translate(0, 20, 0);
 
 
-	//SceneNode *dragon = _loadMesh("dragon", Vector3(50, 0, 100));
+	//SceneNode *dragon = _loadMesh("dragon", Vector3(50, 0, 100), 20.0f);
 
-	//dragon->scale(20, 20, 20);
+	////dragon->scale(20, 20, 20);
 	//dragon->pitch(Degree(180));
 	//dragon->translate(0, 15, 0);
 
 
-	_loadMesh("Rectangle01", Vector3(0, 0, 0));
+	//_loadMesh("Plane01", Vector3(0, 0, 0), 1.0f);
 
 
 
@@ -145,12 +147,14 @@ SceneNode* MyApplication::_loadMesh(const String &_name, const Vector3 &_pos, Re
 	SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode(_name+"Node", _pos);
 	
 	//_setCelShadingMaterial(ent);
-	ent->setMaterialName("Objects/Cube");
+	ent->setMaterialName("NPR/Face");
 	ManualObject *edges = _createQuadFinGeometry(ent);
+	edges->setVisible(true);
 
 
 	node->attachObject(ent);
 	node->attachObject(edges);
+	node->setVisible(true);
 	return node;
 }
 //-----------------------------------------------------------------------------
@@ -209,11 +213,6 @@ ManualObject* MyApplication::_createQuadFinGeometry(Ogre::Entity *_ent)
 										  ,valleyThreshold);
 
 			markedEdge = (isRidge || isValley) ? 1.0f : 0.0f;
-		
-
-			//build degenerate triangles for this edge
-			/*Vector3 nA_ = Vector3(nA.x, nA.y, nA.z).normalisedCopy();
-			Vector3 nB_ = Vector3(nB.x, nB.y, nB.z).normalisedCopy();*/
 		}
 
 		_buildEdgeQuad(v0, v1, nA, nB, markedEdge, idx, edgeGeometry);
@@ -234,6 +233,7 @@ void MyApplication::_buildEdgeQuad(  const Vector3 &_v0, const Vector3&_v1
 	Vector3 nA = Vector3(_nA.x, _nA.y, _nA.z).normalisedCopy();
 	Vector3 nB = Vector3(_nB.x, _nB.y, _nB.z).normalisedCopy();
 
+		
 	/* 1st tri
 	   1 __ 2
 		| /
@@ -244,18 +244,21 @@ void MyApplication::_buildEdgeQuad(  const Vector3 &_v0, const Vector3&_v1
 	_edgeGeometry->normal(nA);
 	_edgeGeometry->textureCoord(nB);
 	_edgeGeometry->textureCoord(_markedEdge);
+
 	_edgeGeometry->index(_idx++);
 
 	_edgeGeometry->position(_v0);
 	_edgeGeometry->normal(nB);
 	_edgeGeometry->textureCoord(nA);
 	_edgeGeometry->textureCoord(_markedEdge);
+
 	_edgeGeometry->index(_idx++);
 
 	_edgeGeometry->position(_v1);
 	_edgeGeometry->normal(nA);
 	_edgeGeometry->textureCoord(nB);
 	_edgeGeometry->textureCoord(_markedEdge);
+
 	_edgeGeometry->index(_idx++);
 
 	/* 2nd tri
@@ -268,18 +271,21 @@ void MyApplication::_buildEdgeQuad(  const Vector3 &_v0, const Vector3&_v1
 	_edgeGeometry->normal(nA);
 	_edgeGeometry->textureCoord(nB);
 	_edgeGeometry->textureCoord(_markedEdge);
+
 	_edgeGeometry->index(_idx++);
 
 	_edgeGeometry->position(_v0);
 	_edgeGeometry->normal(nB);
 	_edgeGeometry->textureCoord(nA);
 	_edgeGeometry->textureCoord(_markedEdge);
+
 	_edgeGeometry->index(_idx++);
 
 	_edgeGeometry->position(_v1);
 	_edgeGeometry->normal(nB);
 	_edgeGeometry->textureCoord(nA);
 	_edgeGeometry->textureCoord(_markedEdge);
+
 	_edgeGeometry->index(_idx++);
 }
 //-----------------------------------------------------------------------------

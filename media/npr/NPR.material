@@ -1,3 +1,21 @@
+material NPR/Face
+{
+  technique
+  {
+    pass
+    {	
+    	//cull_hardware none
+	//depth_write off
+
+      	ambient 0.5 0.5 0.5 1.0
+      	diffuse  0.5 0.5 0.5
+    }
+  }
+}
+
+
+
+
 vertex_program NPR/EdgeOutlinerVP cg
 {
 	source NPR.cg
@@ -7,7 +25,7 @@ vertex_program NPR/EdgeOutlinerVP cg
 	default_params
 	{
 		//param_named_auto lightPosition light_position_object_space 0
-		param_named_auto eyePosition camera_position
+		param_named_auto eyePosition camera_position_object_space
 		param_named_auto worldViewProj worldviewproj_matrix
 		param_named_auto modelWorld world_matrix
 	}
