@@ -1,0 +1,17 @@
+syntax:glob
+
+ogre-npr-dist\*
+*.ncb
+*.dll
+*.ilk
+*.obj
+*.dep
+*.manifest
+*.user
+*.log
+*.pdb
+*.exe
+*.pch
+*.idb
+*.htm
+*.suo
