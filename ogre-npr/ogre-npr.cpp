@@ -2,7 +2,7 @@
 #include "precompiled.h"
 
 #include <Ogre.h>
-#include "MyApplication.h"
+#include "NPRDemoApp.h"
 
 
 
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 #endif
 {
    // Create application object
-   MyApplication app;
+   NPRDemoApp app;
 
    //SET_TERM_HANDLER;
 

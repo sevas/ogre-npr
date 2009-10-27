@@ -21,7 +21,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -42,8 +42,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Zm200"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(BOOST136_HOME)&quot;;&quot;$(OGRE16_HOME)\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
+				AdditionalIncludeDirectories="&quot;$(BOOST136_HOME)&quot;;&quot;$(OGRE16_HOME)\include&quot;;..\Dependencies\OgreMax\tinyxml;..\Dependencies\OgreMax"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;TIXML_USE_STL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -97,7 +97,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -120,8 +120,8 @@
 				AdditionalOptions="/Zm200"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(BOOST136_HOME)&quot;;&quot;$(OGRE16_HOME)\include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				AdditionalIncludeDirectories="&quot;$(BOOST136_HOME)&quot;;&quot;$(OGRE16_HOME)\include&quot;;..\Dependencies\OgreMax\tinyxml;..\Dependencies\OgreMax"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;TIXML_USE_STL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -180,7 +180,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\MyApplication.cpp"
+				RelativePath=".\NPRDemoApp.cpp"
 				>
 			</File>
 			<File
@@ -207,6 +207,194 @@
 				RelativePath=".\TextRenderer.cpp"
 				>
 			</File>
+			<Filter
+				Name="Dep/OgreMax"
+				>
+				<File
+					RelativePath="..\Dependencies\OgreMax\OgreMaxModel.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\OgreMaxScene.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\OgreMaxUtilities.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\OgrePlugins.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\ProgressCalculator.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\Version.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="Dep/tinyxml"
+				>
+				<File
+					RelativePath="..\Dependencies\OgreMax\tinyxml\tinyxml.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\tinyxml\tinyxmlerror.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\tinyxml\tinyxmlparser.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -214,7 +402,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\MyApplication.h"
+				RelativePath=".\NPRDemoApp.h"
 				>
 			</File>
 			<File
@@ -229,6 +417,54 @@
 				RelativePath=".\TextRenderer.h"
 				>
 			</File>
+			<Filter
+				Name="Dep/tinyxml"
+				>
+				<File
+					RelativePath="..\Dependencies\OgreMax\tinyxml\tinyxml.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Dep/OgreMax"
+				>
+				<File
+					RelativePath="..\Dependencies\OgreMax\OgreMaxModel.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\OgreMaxPlatform.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\OgreMaxRenderWindowIterator.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\OgreMaxScene.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\OgreMaxTypes.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\OgreMaxUtilities.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\OgrePlugins.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\ProgressCalculator.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Dependencies\OgreMax\Version.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
