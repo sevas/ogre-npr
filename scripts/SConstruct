@@ -1,0 +1,17 @@
+import os
+from pprint import pprint
+
+EXTERNAL_DEPS = ["OGRE16_HOME", "BOOST136_HOME"]
+
+
+
+for var_name in EXTERNAL_DEPS:
+    print os.getenv(var_name)
+
+env = Environment()
+dic = env.Dictionary()
+
+for key in ['OBJSUFFIX', 'LIBSUFFIX', 'PROGSUFFIX']:
+    print "key = %s, value = %s" % (key, dic[key])
+
+pprint(dic)
