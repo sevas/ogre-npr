@@ -21,7 +21,7 @@ class OgreApplication	: public FrameListener
 						, public OIS::KeyListener
 {
 public:
-   OgreApplication();
+   OgreApplication(const String&);
    virtual ~OgreApplication();
 
    virtual void go();
@@ -62,18 +62,18 @@ protected:
 
 protected:
     void _createGrid(int);
+	String mTitle;
+    Root *mRoot;
+    Camera* mCamera;
+    SceneManager* mSceneMgr;
+    RenderWindow* mWindow;
 
-   Root *mRoot;
-   Camera* mCamera;
-   SceneManager* mSceneMgr;
-   RenderWindow* mWindow;
+    SceneNode *mCameraNode, *mCameraTargetNode, *mCameraBaseNode;
+    Real mRotateSpeed;
 
-   SceneNode *mCameraNode, *mCameraTargetNode, *mCameraBaseNode;
-   Real mRotateSpeed;
-
-   OIS::InputManager *mInputManager;
-   OIS::Keyboard *mKeyboard;
-   OIS::Mouse *mMouse;
+    OIS::InputManager *mInputManager;
+    OIS::Keyboard *mKeyboard;
+    OIS::Mouse *mMouse;
 };
  
 #endif // __OgreApplication_h__

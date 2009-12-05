@@ -12,7 +12,7 @@ using namespace Ogre;
 
 
 //-----------------------------------------------------------------------------
-OgreApplication::OgreApplication()
+OgreApplication::OgreApplication(const String &_title)
     :mRoot(NULL)
     ,mCamera(NULL)
     ,mSceneMgr(NULL)
@@ -21,6 +21,7 @@ OgreApplication::OgreApplication()
     ,mKeyboard(NULL)
     ,mMouse(NULL)
     ,mRotateSpeed(0.5)
+	,mTitle(_title)
 {
 	
 }
@@ -82,7 +83,7 @@ bool OgreApplication::initOgreCore()
     {
         // If returned true, user clicked OK so initialise
         // Here we choose to let the system create a default rendering window by passing 'true'
-        mWindow = mRoot->initialise(true, "sandbox");
+        mWindow = mRoot->initialise(true, mTitle);
         return true;
     }
     else

@@ -15,7 +15,8 @@
 
 //-----------------------------------------------------------------------------
 NPRDemoApp::NPRDemoApp()
-	:mBBset(NULL)
+	:OgreApplication("NPR Sandbox")
+	,mBBset(NULL)
 	,mLightFlare(NULL)
 	,mLight(NULL)
 	,mLightNode(NULL)
