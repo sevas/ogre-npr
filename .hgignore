@@ -1,6 +1,7 @@
 syntax:glob
 
 ogre-npr-dist\*
+media\titanic\*
 *.ncb
 *.dll
 *.ilk
@@ -15,3 +16,4 @@ ogre-npr-dist\*
 *.idb
 *.htm
 *.suo
+*.res
