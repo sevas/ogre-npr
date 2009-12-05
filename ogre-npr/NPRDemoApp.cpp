@@ -1,3 +1,9 @@
+/* This program is free software. It comes without any warranty, to
+* the extent permitted by applicable law. You can redistribute it
+* and/or modify it under the terms of the Do What The Fuck You Want
+* To Public License, Version 2, as published by Sam Hocevar. See
+* http://sam.zoy.org/wtfpl/COPYING for more details. */
+
 #include "precompiled.h"
 
 #include "NPRDemoApp.h"
@@ -108,16 +114,14 @@ void NPRDemoApp::_populate()
 {
 	_loadMesh("TorusKnot01", Vector3(-50, 0, 0));
 	_loadMesh("Teapot01",	 Vector3(50, 0, 0));
-	//
 	_loadMesh("Gengon01",	Vector3(-50, 0, 50));
 	_loadMesh("Cone01",		Vector3(50, 0, 50));
-	//
 	_loadMesh("Box01",		Vector3(-50, 0, -50));
-	//_loadMesh("Cylinder01", Vector3(50, 0, -50));
+	_loadMesh("Cylinder01", Vector3(50, 0, -50));
+	_loadMesh("Rectangle01", Vector3(0, 0, 0));
+
 	
-	//_loadMesh("sphere2", Vector3(500, 0, 0));
-	////
-	
+	// standford models
 	/*SceneNode *bunny = _loadMesh("bunny", Vector3(-50, 0, 100), 20.0f);
 
 	bunny->scale(20, 20, 20);
@@ -132,32 +136,14 @@ void NPRDemoApp::_populate()
 	dragon->translate(0, 15, 0);*/
 
 
-	_loadMesh("Rectangle01", Vector3(0, 0, 0));
 
 
+	// loading a .scene scene
 	//SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode("titanic_root");
 	//_loadScene("titanic", node);
 
 	////node->translate(0, 0, 1000);
 	//node->scale(0.1, 0.1, 0.1);
-
-	//_loadMesh("math_back wall", Vector3::ZERO);
-	//_loadMesh("math_chairs", Vector3::ZERO);
-	//_loadMesh("math_front wall", Vector3::ZERO);
-	//_loadMesh("math_ground", Vector3::ZERO);
-	//_loadMesh("math_left wall", Vector3::ZERO);
-	//_loadMesh("math_right wall", Vector3::ZERO);
-	//_loadMesh("math_screen", Vector3::ZERO);
-
-
-
-	//_loadMesh("suede_audience", Vector3::ZERO); 
-	//_loadMesh("suede_ground", Vector3::ZERO); 
-	////_loadMesh("suede_roof", Vector3::ZERO); 
-	//_loadMesh("suede_wall back", Vector3::ZERO); 
-	//_loadMesh("suede_wall front", Vector3::ZERO); 
-	//_loadMesh("suede_wall left", Vector3::ZERO); 
-	//_loadMesh("suede_wall right", Vector3::ZERO); 
 }
 //-----------------------------------------------------------------------------
 void NPRDemoApp::_loadScene(const String &_name, SceneNode* _node)

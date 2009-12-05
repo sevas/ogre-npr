@@ -1,3 +1,5 @@
+// Taken from http://www.ogre3d.org/wiki/index.php/Simple_Text_Output
+
 #ifndef TextRenderer_h__
 #define TextRenderer_h__
 
