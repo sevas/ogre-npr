@@ -122,7 +122,7 @@ void NPRDemoApp::_populate()
 	_loadMesh("Rectangle01", Vector3(0, 0, 0));
 
 	
-	// standford models
+	// stanford models
 	/*SceneNode *bunny = _loadMesh("bunny", Vector3(-50, 0, 100), 20.0f);
 
 	bunny->scale(20, 20, 20);
