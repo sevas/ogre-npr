@@ -21,9 +21,9 @@ OgreApplication::OgreApplication(const String &_title)
     ,mKeyboard(NULL)
     ,mMouse(NULL)
     ,mRotateSpeed(0.5)
-	,mTitle(_title)
+    ,mTitle(_title)
 {
-	
+    
 }
 //-----------------------------------------------------------------------------
 OgreApplication::~OgreApplication()
