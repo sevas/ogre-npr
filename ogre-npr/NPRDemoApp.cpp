@@ -224,7 +224,7 @@ ManualObject* NPRDemoApp::_createQuadFinGeometry(Ogre::Entity *_ent)
 
 
             bool isRidge = _isEdgeARidge(Vector3(nA.x, nA.y, nA.z)
-                                        ,Vector3(nB.x, nB.y, nB.z)
+                                        	,Vector3(nB.x, nB.y, nB.z)
                                         ,ridgeThreshold);
 
             bool isValley = _isEdgeAValley(Vector3(nA.x, nA.y, nA.z)

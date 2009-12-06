@@ -15,10 +15,10 @@ using namespace Ogre;
 
 /* Basic Ogre app : loads conf files, resources, creates RenderWindow, 
 SceneManager, sets up basic mouse input handling*/
-class OgreApplication	: public FrameListener
-						, public WindowEventListener 
-						, public OIS::MouseListener
-						, public OIS::KeyListener
+class OgreApplication   : public FrameListener
+                        , public WindowEventListener 
+                        , public OIS::MouseListener
+                        , public OIS::KeyListener
 {
 public:
    OgreApplication(const String&);
@@ -62,7 +62,7 @@ protected:
 
 protected:
     void _createGrid(int);
-	String mTitle;
+    String mTitle;
     Root *mRoot;
     Camera* mCamera;
     SceneManager* mSceneMgr;
