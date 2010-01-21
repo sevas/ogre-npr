@@ -5,14 +5,6 @@ Created on Sun Oct 18 16:13:26 2009
 @author: sevas
 """
 
-# -*- coding: utf-8 -*-
-"""
-Éditeur de Spyder
-
-Ce script temporaire est sauvegardé ici :
-C:\Users\sevas\.spyder\.temp.py
-"""
-
 import math as m
 
 def normalize(v):

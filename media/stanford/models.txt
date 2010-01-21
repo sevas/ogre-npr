@@ -1,0 +1,6 @@
+Stanford models: http://graphics.stanford.edu/data/3Dscanrep/
+
+Export to native Ogre meshes : 
+
+OgreMax plugin for 3dsmax: http://www.ogremax.com/
+Ogre exporter for blender : http://www.ogre3d.org/wiki/index.php/Blender_Exporter

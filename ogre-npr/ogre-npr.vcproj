@@ -465,6 +465,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Dep/tinyxml"
+				>
+				<File
+					RelativePath="..\Dependencies\OgreMax\tinyxml\tinyxml.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

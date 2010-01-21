@@ -1,3 +1,9 @@
+/* This program is free software. It comes without any warranty, to
+* the extent permitted by applicable law. You can redistribute it
+* and/or modify it under the terms of the Do What The Fuck You Want
+* To Public License, Version 2, as published by Sam Hocevar. See
+* http://sam.zoy.org/wtfpl/COPYING for more details. */
+
 #include "precompiled.h"
 
 #include "OgreApplication.h"
@@ -6,7 +12,7 @@ using namespace Ogre;
 
 
 //-----------------------------------------------------------------------------
-OgreApplication::OgreApplication()
+OgreApplication::OgreApplication(const String &_title)
     :mRoot(NULL)
     ,mCamera(NULL)
     ,mSceneMgr(NULL)
@@ -15,8 +21,9 @@ OgreApplication::OgreApplication()
     ,mKeyboard(NULL)
     ,mMouse(NULL)
     ,mRotateSpeed(0.5)
+    ,mTitle(_title)
 {
-	
+    
 }
 //-----------------------------------------------------------------------------
 OgreApplication::~OgreApplication()
@@ -76,7 +83,7 @@ bool OgreApplication::initOgreCore()
     {
         // If returned true, user clicked OK so initialise
         // Here we choose to let the system create a default rendering window by passing 'true'
-        mWindow = mRoot->initialise(true, "sandbox");
+        mWindow = mRoot->initialise(true, mTitle);
         return true;
     }
     else
@@ -253,7 +260,7 @@ bool OgreApplication::mouseMoved( const OIS::MouseEvent &e )
         int dy = e.state.Y.rel * mRotateSpeed;
 
         mCameraTargetNode->yaw(Degree(dx), SceneNode::TS_PARENT);
-        mCameraTargetNode->pitch(Degree(dy)/*, SceneNode::TS_PARENT*/);
+        mCameraTargetNode->pitch(Degree(dy));
     }
     else if (e.state.buttonDown(OIS::MB_Middle))
     {

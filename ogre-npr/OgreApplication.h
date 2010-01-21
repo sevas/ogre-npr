@@ -1,3 +1,9 @@
+/* This program is free software. It comes without any warranty, to
+* the extent permitted by applicable law. You can redistribute it
+* and/or modify it under the terms of the Do What The Fuck You Want
+* To Public License, Version 2, as published by Sam Hocevar. See
+* http://sam.zoy.org/wtfpl/COPYING for more details. */
+
 #ifndef __OgreApplication_h__
 #define __OgreApplication_h__
 
@@ -7,13 +13,15 @@
 
 using namespace Ogre;
 
-class OgreApplication	: public FrameListener
-						, public WindowEventListener 
-						, public OIS::MouseListener
-						, public OIS::KeyListener
+/* Basic Ogre app : loads conf files, resources, creates RenderWindow, 
+SceneManager, sets up basic mouse input handling*/
+class OgreApplication   : public FrameListener
+                        , public WindowEventListener 
+                        , public OIS::MouseListener
+                        , public OIS::KeyListener
 {
 public:
-   OgreApplication();
+   OgreApplication(const String&);
    virtual ~OgreApplication();
 
    virtual void go();
@@ -54,18 +62,18 @@ protected:
 
 protected:
     void _createGrid(int);
+    String mTitle;
+    Root *mRoot;
+    Camera* mCamera;
+    SceneManager* mSceneMgr;
+    RenderWindow* mWindow;
 
-   Root *mRoot;
-   Camera* mCamera;
-   SceneManager* mSceneMgr;
-   RenderWindow* mWindow;
+    SceneNode *mCameraNode, *mCameraTargetNode, *mCameraBaseNode;
+    Real mRotateSpeed;
 
-   SceneNode *mCameraNode, *mCameraTargetNode, *mCameraBaseNode;
-   Real mRotateSpeed;
-
-   OIS::InputManager *mInputManager;
-   OIS::Keyboard *mKeyboard;
-   OIS::Mouse *mMouse;
+    OIS::InputManager *mInputManager;
+    OIS::Keyboard *mKeyboard;
+    OIS::Mouse *mMouse;
 };
  
 #endif // __OgreApplication_h__
