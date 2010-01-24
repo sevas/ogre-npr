@@ -27,26 +27,26 @@ VertexOutput main_vp( AppData IN,
 
     OUT.color = 0.0f;
 
-	float EdotN = dot(E,N);
-	float EdotT = dot(E,T);
+    float EdotN = dot(E,N);
+    float EdotT = dot(E,T);
  
-	float extend =  0.1 * (length(E)/75.0f);
+    float extend =  0.1 * (length(E)/75.0f);
     float3 newPos;
 
     // extend everything by default
     newPos = IN.position + IN.normal * extend; 
 
-	if ( ( EdotN * EdotT ) < 0 )	// silhouette detection : one triangle
+    if ( ( EdotN * EdotT ) < 0 )    // silhouette detection : one triangle
                                     // facing, one triangle backfacing
-	{
-		OUT.color.a = 1;	// make this visible
-		if ( EdotN > 0 )	// extend only the front facing vertices
-		{
+    {
+        OUT.color.a = 1;    // make this visible
+        if ( EdotN > 0 )    // extend only the front facing vertices
+        {
             // back facing vertices are extended in the other direction
             // disabled culling will make the edge appear
             newPos = IN.position - IN.normal * extend ;
-		}        
-	}
+        }        
+    }
     
     // ridge or valley
     if(IN.markedEdge == 1.0f)
@@ -66,11 +66,11 @@ VertexOutput main_vp( AppData IN,
 }
 //------------------------------------------------------------------------------
 void main_fp(float4 color      : COLOR,
-             out float4 oColor : COLOR	 
+             out float4 oColor : COLOR   
 )
 {
-	oColor = color;
+    oColor = color;
 }
 //------------------------------------------------------------------------------
-			 
-			 
+             
+             
