@@ -3,7 +3,7 @@ vertex_program Shading/PerVertex/GoochVP cg
 {
 	source		gooch.cg
 	entry_point	main_vp
-	profiles	vs_2_0
+	profiles	vs_2_0 vp20 arbvp1
 	
 	default_params
 	{ 
@@ -21,7 +21,7 @@ fragment_program Shading/PerVertex/GoochFP cg
 {
 	source		 gooch.cg
 	entry_point	 main_fp
-	profiles	 ps_2_0
+	profiles	 ps_2_0 fp20 arbfp1
 }
 //------------------------------------------------------------------------------
 material Shading/PerVertex/Gooch
@@ -50,7 +50,7 @@ vertex_program Shading/PerPixel/GoochVP cg
 {
 	source		gooch_pp.cg
 	entry_point	main_vp
-	profiles	vs_2_0
+	profiles	vs_2_0 vp20 arbvp1
 
 	default_params		
 	{ 
@@ -63,7 +63,7 @@ fragment_program Shading/PerPixel/GoochFP cg
 {
 	source		 gooch_pp.cg
 	entry_point	 main_fp
-	profiles	 ps_2_0
+	profiles	 ps_2_0 fp20 arbfp1
 
 	default_params
 	{ 
