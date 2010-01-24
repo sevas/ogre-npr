@@ -13,12 +13,12 @@
 #include "OgreApplication.h"
 #include "TextRenderer.h"
 
-#include <OgreMaxScene.hpp>
+//#include <OgreMaxScene.hpp>
 
 using namespace Ogre;
 
 
-class NPRDemoApp : public OgreApplication, public OgreMax::OgreMaxSceneCallback
+class NPRDemoApp : public OgreApplication/*, public OgreMax::OgreMaxSceneCallback*/
 {
 protected:
     typedef struct 
@@ -69,7 +69,7 @@ protected:
     void _updateDebugOverlay();
 
     // OgreMaxSceneCallback
-    void CreatedEntity(const OgreMax::OgreMaxScene*, Ogre::Entity*);
+    //void CreatedEntity(const OgreMax::OgreMaxScene*, Ogre::Entity*);
 
     void _setEdgesVisible(EdgeGeometryItem&, bool);
 

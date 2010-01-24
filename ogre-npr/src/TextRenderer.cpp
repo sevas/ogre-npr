@@ -1,5 +1,5 @@
 // Taken from http://www.ogre3d.org/wiki/index.php/Simple_Text_Output
-#include "precompiled.h"
+//#include "precompiled.h"
 
 #include "TextRenderer.h"
 

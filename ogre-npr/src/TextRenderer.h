@@ -2,7 +2,7 @@
 
 #ifndef TextRenderer_h__
 #define TextRenderer_h__
-
+#include <Carbon.h>
 #include <Ogre.h>
 #include <OgreSingleton.h>
 

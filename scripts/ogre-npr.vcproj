@@ -18,7 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)/bin.win32/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
@@ -94,7 +94,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)$/bin.win32/(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
@@ -180,19 +180,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\NPRDemoApp.cpp"
+				RelativePath="..\ogre-npr\src\NPRDemoApp.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ogre-npr.cpp"
+				RelativePath="..\ogre-npr\src\ogre-npr.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreApplication.cpp"
+				RelativePath="..\ogre-npr\src\OgreApplication.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\precompiled.cpp"
+				RelativePath="..\ogre-npr\src\precompiled.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -204,7 +204,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\TextRenderer.cpp"
+				RelativePath="..\ogre-npr\src\TextRenderer.cpp"
 				>
 			</File>
 			<Filter
@@ -402,19 +402,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\NPRDemoApp.h"
+				RelativePath="..\ogre-npr\src\NPRDemoApp.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreApplication.h"
+				RelativePath="..\ogre-npr\src\OgreApplication.h"
 				>
 			</File>
 			<File
-				RelativePath=".\precompiled.h"
+				RelativePath="..\ogre-npr\src\precompiled.h"
 				>
 			</File>
 			<File
-				RelativePath=".\TextRenderer.h"
+				RelativePath="..\ogre-npr\src\TextRenderer.h"
 				>
 			</File>
 			<Filter

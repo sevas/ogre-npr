@@ -4,12 +4,40 @@
 * To Public License, Version 2, as published by Sam Hocevar. See
 * http://sam.zoy.org/wtfpl/COPYING for more details. */
 
-#include "precompiled.h"
+//#include "precompiled.h"
 
 #include "OgreApplication.h"
 
 using namespace Ogre;
 
+
+
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+#include <CoreFoundation/CoreFoundation.h>
+
+// This function will locate the path to our application on OS X,
+// unlike windows you can not rely on the curent working directory
+// for locating your configuration files and resources.
+inline std::string macBundlePath()
+{
+    char path[1024];
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    assert(mainBundle);
+
+    CFURLRef mainBundleURL = CFBundleCopyBundleURL(mainBundle);
+    assert(mainBundleURL);
+
+    CFStringRef cfStringRef = CFURLCopyFileSystemPath( mainBundleURL, kCFURLPOSIXPathStyle);
+    assert(cfStringRef);
+
+    CFStringGetCString(cfStringRef, path, 1024, kCFStringEncodingASCII);
+
+    CFRelease(mainBundleURL);
+    CFRelease(cfStringRef);
+
+    return std::string(path);
+}
+#endif
 
 //-----------------------------------------------------------------------------
 OgreApplication::OgreApplication(const String &_title)
@@ -23,7 +51,11 @@ OgreApplication::OgreApplication(const String &_title)
     ,mRotateSpeed(0.5)
     ,mTitle(_title)
 {
-    
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+	mResourcePath = macBundlePath() + "/Contents/Resources/";
+#else
+	mResourcePath = "";
+#endif
 }
 //-----------------------------------------------------------------------------
 OgreApplication::~OgreApplication()
@@ -44,7 +76,13 @@ void OgreApplication::go()
 //-----------------------------------------------------------------------------
 bool OgreApplication::initialise()
 {
-    mRoot = new Root();
+
+	String pluginsPath;
+#ifndef OGRE_STATIC_LIB
+		pluginsPath = mResourcePath + "plugins.cfg";
+#endif
+	
+    mRoot = new Root(pluginsPath, mResourcePath + "ogre.cfg", mResourcePath + "Ogre.log");
 
     // add resource locations
     addResourceLocations();
@@ -162,7 +200,7 @@ void OgreApplication::addResourceLocations()
 {
     // Load resource paths from config file
     ConfigFile cf;
-    cf.load("resources.cfg");
+    cf.load(mResourcePath+"resources.cfg");
 
     // Go through all sections & settings in the file
     ConfigFile::SectionIterator seci = cf.getSectionIterator();
@@ -177,7 +215,17 @@ void OgreApplication::addResourceLocations()
         {
             typeName = i->first;
             archName = i->second;
-            ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+                // OS X does not set the working directory relative to the app,
+                // In order to make things portable on OS X we need to provide
+                // the loading with it's own bundle path location
+                ResourceGroupManager::getSingleton().addResourceLocation(
+                    String(macBundlePath() + "/" + archName), typeName, secName);
+#else
+                ResourceGroupManager::getSingleton().addResourceLocation(
+                    archName, typeName, secName);
+#endif
+            //ResourceGroupManager::getSingleton().addResourceLocation(macBundlePath()+archName, typeName, secName);
         }
     }
 }

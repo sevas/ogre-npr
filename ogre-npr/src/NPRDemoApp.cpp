@@ -4,7 +4,7 @@
 * To Public License, Version 2, as published by Sam Hocevar. See
 * http://sam.zoy.org/wtfpl/COPYING for more details. */
 
-#include "precompiled.h"
+//#include "precompiled.h"
 
 #include "NPRDemoApp.h"
 
@@ -12,6 +12,9 @@
 #include <boost/foreach.hpp>
 
 #define ANIMATE_LIGHT
+
+
+
 
 //-----------------------------------------------------------------------------
 NPRDemoApp::NPRDemoApp()
@@ -149,14 +152,15 @@ void NPRDemoApp::_populate()
 //-----------------------------------------------------------------------------
 void NPRDemoApp::_loadScene(const String &_name, SceneNode* _node)
 {
-    OgreMax::OgreMaxScene sceneLoader;
+ /*   OgreMax::OgreMaxScene sceneLoader;
 
     sceneLoader.Load("../media/"+_name+"/"+_name+".scene", mWindow
         , OgreMax::OgreMaxScene::SKIP_ENVIRONMENT |
         OgreMax::OgreMaxScene::SKIP_SKY |
         OgreMax::OgreMaxScene::SKIP_TERRAIN|
         OgreMax::OgreMaxScene::SKIP_EXTERNALS
-                    ,mSceneMgr,_node, this);
+                    ,mSceneMgr,_node, this); 
+ */
 }
 //-----------------------------------------------------------------------------
 SceneNode* NPRDemoApp::_loadMesh(const String &_name, const Vector3 &_pos)
@@ -524,7 +528,7 @@ bool NPRDemoApp::_isEdgeAValley(const Vector3 &_nA, const Vector3 &_nB, const Re
     return nA_norm.dotProduct(nB_norm) < Math::Cos(_threshold);
 }
 //-----------------------------------------------------------------------------
-void NPRDemoApp::CreatedEntity(const OgreMax::OgreMaxScene* scene
+/*void NPRDemoApp::CreatedEntity(const OgreMax::OgreMaxScene* scene
                                  ,Ogre::Entity* entity)
 {
     entity->setMaterialName("NPR/Face");
@@ -538,7 +542,7 @@ void NPRDemoApp::CreatedEntity(const OgreMax::OgreMaxScene* scene
         node->attachObject(edges);
         node->setVisible(true); 
     }
-}
+}*/
 //-----------------------------------------------------------------------------
 void NPRDemoApp::_setEdgesVisible(EdgeGeometryItem &_item, bool _visible)
 {

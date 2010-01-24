@@ -6,10 +6,12 @@
 
 #ifndef __OgreApplication_h__
 #define __OgreApplication_h__
-
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+#include <Carbon.h>
+#endif
 #include <Ogre.h>
 #include <OIS/OIS.h>
-#include <CEGUI/CEGUI.h>
+//#include <CEGUI/CEGUI.h>
 
 using namespace Ogre;
 
@@ -67,6 +69,7 @@ protected:
     Camera* mCamera;
     SceneManager* mSceneMgr;
     RenderWindow* mWindow;
+	String mResourcePath;
 
     SceneNode *mCameraNode, *mCameraTargetNode, *mCameraBaseNode;
     Real mRotateSpeed;

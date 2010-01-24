@@ -17,3 +17,8 @@ media\titanic\*
 *.htm
 *.suo
 *.res
+CMakeFiles/*
+*~
+CMakeCache.txt
+*.app
+Makefile
