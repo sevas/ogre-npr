@@ -18,7 +18,9 @@ media\titanic\*
 *.suo
 *.res
 CMakeFiles/*
-*~
 CMakeCache.txt
 *.app
 Makefile
+*.DS_Store
+cmake_install.cmake
+*~
