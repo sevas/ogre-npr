@@ -1,0 +1,70 @@
+
+struct AppData
+{
+    float4 position : POSITION;
+    float3 normal	: NORMAL;
+};
+
+struct VertexOutput
+{
+    float4 position  : POSITION;
+    float4 color     : COLOR;
+};
+
+
+//------------------------------------------------------------------------------
+void gooch_shading(float3 N, float3 L, float3 V, float3 kc, float3 kw
+                   , float shininess, float3 lightColor, float3 Ks
+                   ,out float3 oDiffuse
+                   ,out float3 oSpecular)
+{
+    float3 LdotN =  max(dot(L, N), 0);
+    //oDiffuse = (1 + LdotN) * kc * 0.5  +  (1 - LdotN) * kw * 0.5;
+    float3 goochFactor  = (1.0+LdotN) / 2.0;
+    oDiffuse = lerp(kw, kc, goochFactor);
+
+
+    float3 H = normalize(L+V);
+    float HdotN = dot(H, N);
+    float4 litV = lit(LdotN,HdotN,shininess);
+
+    float spec = litV.y * litV.z;
+    oSpecular = Ks * lightColor * spec;
+}
+
+//------------------------------------------------------------------------------
+VertexOutput main_vp(AppData IN
+                     ,uniform float4x4 modelViewProj
+                     ,uniform float3 globalAmbient
+                     ,uniform float3 lightColor
+                     ,uniform float3 lightPosition
+                     ,uniform float3 eyePosition
+                     ,uniform float3 KCool
+                     ,uniform float3 KWarm
+                     ,uniform float3 Ks
+                     ,uniform float ns)
+{
+    VertexOutput OUT;
+    OUT.position = mul(modelViewProj, IN.position);
+    
+    float3 N = normalize(IN.normal);
+    float3 L = normalize(lightPosition);
+    float3 V = normalize(eyePosition);
+
+    
+    float3 goochDiffuse, goochSpecular;
+    gooch_shading(N, L, V, KCool, KWarm, ns, lightColor, Ks
+                  , goochDiffuse, goochSpecular);
+    
+    OUT.color.rgb = goochDiffuse + goochSpecular;
+    OUT.color.a = 1;
+    
+    return OUT;
+}
+//------------------------------------------------------------------------------
+void main_fp(float4 iColor       : COLOR
+            ,out float4 oColor   : COLOR)
+{
+    oColor = iColor;
+}
+//------------------------------------------------------------------------------

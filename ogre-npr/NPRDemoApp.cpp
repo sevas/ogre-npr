@@ -4,17 +4,14 @@
 * To Public License, Version 2, as published by Sam Hocevar. See
 * http://sam.zoy.org/wtfpl/COPYING for more details. */
 
-//#include "precompiled.h"
+#include "precompiled.h"
 
 #include "NPRDemoApp.h"
 
 #include <sstream>
 #include <boost/foreach.hpp>
 
-#define ANIMATE_LIGHT
-
-
-
+//#define ANIMATE_LIGHT
 
 //-----------------------------------------------------------------------------
 NPRDemoApp::NPRDemoApp()
@@ -48,8 +45,9 @@ void NPRDemoApp::createScene()
 
     _createDebugOverlay();
 
+
     mLightNode->detachObject(mLight);
-    mCameraNode->attachObject(mLight);
+    mCameraNode->attachObject(mLight);http://friendlyatheist.com/2010/01/20/stop-trampling-babies/
 
     mLightNode->setVisible(false);
 
@@ -127,24 +125,29 @@ void NPRDemoApp::_populate()
     _loadMesh("Cone01",     Vector3(50, 0, 50));
     _loadMesh("Box01",      Vector3(-50, 0, -50));
     _loadMesh("Cylinder01", Vector3(50, 0, -50));
+	
+	//_loadMesh("sphere2", Vector3(500, 0, 0));
+	//
     _loadMesh("Rectangle01", Vector3(0, 0, 0));
 
-    
     // stanford models
-    /*SceneNode *bunny = _loadMesh("bunny", Vector3(-50, 0, 100), 20.0f);
 
-    bunny->scale(20, 20, 20);
-    bunny->pitch(Degree(-90));
-    bunny->translate(0, 20, 0);
+ //   SceneNode *bunny = _loadMesh("bunny", Vector3::ZERO);
+    
+	//bunny->scale(100, 100, 100);
+	//bunny->pitch(Degree(-90));
+	//bunny->translate(0, 20, 0);
+
+	//SceneNode *dragon = _loadMesh("dragon", Vector3(50, 0, 100));
+    
+ //   SceneNode *dragon = _loadMesh("dragon", Vector3::ZERO);
+
+	//dragon->scale(50, 50, 50);
+	//dragon->pitch(Degree(180));
+	//dragon->translate(0, 15, 0);
 
 
-    SceneNode *dragon = _loadMesh("dragon", Vector3(50, 0, 100), 20.0f);
-
-    dragon->scale(20, 20, 20);
-    dragon->pitch(Degree(180));
-    dragon->translate(0, 15, 0);*/
-
-
+	
 
 
     // loading a .scene scene
@@ -157,15 +160,14 @@ void NPRDemoApp::_populate()
 //-----------------------------------------------------------------------------
 void NPRDemoApp::_loadScene(const String &_name, SceneNode* _node)
 {
- /*   OgreMax::OgreMaxScene sceneLoader;
+    OgreMax::OgreMaxScene sceneLoader;
 
     sceneLoader.Load("../media/"+_name+"/"+_name+".scene", mWindow
         , OgreMax::OgreMaxScene::SKIP_ENVIRONMENT |
         OgreMax::OgreMaxScene::SKIP_SKY |
         OgreMax::OgreMaxScene::SKIP_TERRAIN|
         OgreMax::OgreMaxScene::SKIP_EXTERNALS
-                    ,mSceneMgr,_node, this); 
- */
+                    ,mSceneMgr,_node, this);
 }
 //-----------------------------------------------------------------------------
 SceneNode* NPRDemoApp::_loadMesh(const String &_name, const Vector3 &_pos)
@@ -534,7 +536,7 @@ bool NPRDemoApp::_isEdgeAValley(const Vector3 &_nA, const Vector3 &_nB, const Re
     return nA_norm.dotProduct(nB_norm) < Math::Cos(_threshold);
 }
 //-----------------------------------------------------------------------------
-/*void NPRDemoApp::CreatedEntity(const OgreMax::OgreMaxScene* scene
+void NPRDemoApp::CreatedEntity(const OgreMax::OgreMaxScene* scene
                                  ,Ogre::Entity* entity)
 {
     entity->setMaterialName("NPR/Face");
@@ -548,7 +550,7 @@ bool NPRDemoApp::_isEdgeAValley(const Vector3 &_nA, const Vector3 &_nB, const Re
         node->attachObject(edges);
         node->setVisible(true); 
     }
-}*/
+}
 //-----------------------------------------------------------------------------
 void NPRDemoApp::_setEdgesVisible(EdgeGeometryItem &_item, bool _visible)
 {
